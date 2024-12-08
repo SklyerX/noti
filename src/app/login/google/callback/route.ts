@@ -9,6 +9,8 @@ import type { OAuth2Tokens } from "arctic";
 import { db } from "@/db";
 import { userTable } from "@/db/schema";
 
+const REDIRECT_PATH = "/dashboard";
+
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const cookieStore = await cookies();
@@ -68,7 +70,7 @@ export async function GET(request: Request): Promise<Response> {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/",
+        Location: REDIRECT_PATH,
       },
     });
   }
@@ -91,7 +93,7 @@ export async function GET(request: Request): Promise<Response> {
   return new Response(null, {
     status: 302,
     headers: {
-      Location: "/",
+      Location: REDIRECT_PATH,
     },
   });
 }
