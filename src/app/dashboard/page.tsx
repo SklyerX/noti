@@ -1,5 +1,5 @@
 import React from "react";
 
 export default function Page() {
-  return <div>Page</div>;
+  return <div className="mx-auto container mt-10">discord</div>;
 }
