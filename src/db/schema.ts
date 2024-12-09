@@ -67,24 +67,10 @@ export const apiKeysTable = pgTable("api_keys", {
   }),
 });
 
-const statusEnum = pgEnum("status", ["failed", "success"]);
-const eventType = pgEnum("event_type", ["read", "write", "delete", "update"]);
-
-export const eventsTable = pgTable("events", {
-  id: serial("id").primaryKey(),
-  projectId: integer("project_id")
-    .notNull()
-    .references(() => projectsTable.id),
-  title: varchar("title", { length: 255 }).notNull(),
-  status: statusEnum("status").notNull(),
-  eventType: eventType("event_type").notNull(),
-});
-
 export type User = InferSelectModel<typeof userTable>;
 export type Session = InferSelectModel<typeof sessionTable>;
 export type Project = InferSelectModel<typeof projectsTable>;
 export type ApiKey = InferSelectModel<typeof apiKeysTable>;
-export type Event = InferSelectModel<typeof eventsTable>;
 
 export const userRelations = relations(userTable, ({ many }) => ({
   sessions: many(sessionTable),
@@ -104,19 +90,11 @@ export const projectRelations = relations(projectsTable, ({ one, many }) => ({
     references: [userTable.id],
   }),
   apiKeys: many(apiKeysTable),
-  events: many(eventsTable),
 }));
 
 export const apiKeyRelations = relations(apiKeysTable, ({ one }) => ({
   project: one(projectsTable, {
     fields: [apiKeysTable.projectId],
-    references: [projectsTable.id],
-  }),
-}));
-
-export const eventRelations = relations(eventsTable, ({ one }) => ({
-  project: one(projectsTable, {
-    fields: [eventsTable.projectId],
     references: [projectsTable.id],
   }),
 }));
