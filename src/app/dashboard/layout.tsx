@@ -1,5 +1,6 @@
 import { validateRequest } from "@/auth";
 import DashboardNav from "@/components/dashboard-nav";
+import { Toaster } from "@/components/ui/sonner";
 import { redirect } from "next/navigation";
 import type React from "react";
 
@@ -16,6 +17,8 @@ export default async function DashboardLayout({
   return (
     <main>
       <DashboardNav user={user} />
+      <Toaster />
+
       {children}
     </main>
   );

@@ -34,13 +34,14 @@ export const sessionTable = pgTable("sessions", {
 });
 
 export const projectsTable = pgTable("projects", {
-  id: varchar("id", { length: 25 })
+  id: varchar("id", { length: 29 })
     .primaryKey()
     .$defaultFn(() => `proj_${createId()}`),
   userId: integer("user_id")
     .notNull()
     .references(() => userTable.id),
   name: varchar("name", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
 export const apiKeysTable = pgTable("api_keys", {
@@ -56,7 +57,9 @@ export const apiKeysTable = pgTable("api_keys", {
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
-  }).notNull(),
+  })
+    .notNull()
+    .defaultNow(),
   updatedAt: timestamp("updated_at", {
     withTimezone: true,
     mode: "date",
