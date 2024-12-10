@@ -16,9 +16,7 @@ export default async function DashboardLayout({
 
   return (
     <main>
-      <DashboardNav user={user} />
       <Toaster />
-
       {children}
     </main>
   );
