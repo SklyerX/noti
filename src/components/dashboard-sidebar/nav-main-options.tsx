@@ -32,12 +32,6 @@ export function NavProjects({
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <MoreHorizontal />
-            <span>More</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
   );
