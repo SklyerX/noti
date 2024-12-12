@@ -1,15 +1,7 @@
 "use client";
 
 import type * as React from "react";
-import {
-  Bell,
-  Book,
-  ChartSpline,
-  Command,
-  Home,
-  Settings,
-  Webhook,
-} from "lucide-react";
+import { Bell, Book, Command, Home, Settings, Webhook } from "lucide-react";
 
 import { NavProjects } from "./nav-main-options";
 import { NavSecondary } from "./nav-secondary";
@@ -50,11 +42,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         name: "Keys",
         url: `/dashboard/${projectId}/keys`,
         icon: Webhook,
-      },
-      {
-        name: "Analytics",
-        url: `/dashboard/${projectId}/analytics`,
-        icon: ChartSpline,
       },
     ],
     navSecondary: [
