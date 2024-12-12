@@ -4,19 +4,10 @@ import type * as React from "react";
 import {
   Bell,
   Book,
-  BookOpen,
-  Bot,
   ChartSpline,
   Command,
-  Frame,
   Home,
-  LifeBuoy,
-  Map as MapIcon,
-  PieChart,
-  Send,
   Settings,
-  Settings2,
-  SquareTerminal,
   Webhook,
 } from "lucide-react";
 
@@ -33,50 +24,53 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  mainOptions: [
-    {
-      name: "Overview",
-      url: "/dashboard/{currentProjectId}",
-      icon: Home,
-    },
-    {
-      name: "Events",
-      url: "/dashboard/{currentProjectId}/events",
-      icon: Bell,
-    },
-    {
-      name: "Keys",
-      url: "/dashboard/{currentProjectId}/keys",
-      icon: Webhook,
-    },
-    {
-      name: "Analytics",
-      url: "/dashboard/{currentProjectId}/analytics",
-      icon: ChartSpline,
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "/dashboard/{currentProjectId}/settings",
-      icon: Settings,
-    },
-    {
-      title: "Documentation",
-      url: "/dashboard/{currentProjectId}/settings",
-      icon: Book,
-    },
-  ],
-};
+import { useParams } from "next/navigation";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { projectId } = useParams();
+
+  const data = {
+    user: {
+      name: "shadcn",
+      email: "m@example.com",
+      avatar: "/avatars/shadcn.jpg",
+    },
+    mainOptions: [
+      {
+        name: "Overview",
+        url: `/dashboard/${projectId}`,
+        icon: Home,
+      },
+      {
+        name: "Events",
+        url: `/dashboard/${projectId}/events`,
+        icon: Bell,
+      },
+      {
+        name: "Keys",
+        url: `/dashboard/${projectId}/keys`,
+        icon: Webhook,
+      },
+      {
+        name: "Analytics",
+        url: `/dashboard/${projectId}/analytics`,
+        icon: ChartSpline,
+      },
+    ],
+    navSecondary: [
+      {
+        title: "Settings",
+        url: `/dashboard/${projectId}/settings`,
+        icon: Settings,
+      },
+      {
+        title: "Documentation",
+        url: `/dashboard/${projectId}/settings`,
+        icon: Book,
+      },
+    ],
+  };
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
