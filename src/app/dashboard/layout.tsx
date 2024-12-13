@@ -3,6 +3,7 @@ import DashboardNav from "@/components/dashboard-nav";
 import { Toaster } from "@/components/ui/sonner";
 import { redirect } from "next/navigation";
 import type React from "react";
+import LinkDiscord from "./link-discord";
 
 export default async function DashboardLayout({
   children,
@@ -14,11 +15,11 @@ export default async function DashboardLayout({
 
   if (!isSignedIn) return redirect("/login");
 
+  if (!user.discordId) return <LinkDiscord />;
+
   return (
     <main>
-      <DashboardNav user={user} />
       <Toaster />
-
       {children}
     </main>
   );
