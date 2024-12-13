@@ -7,6 +7,7 @@ import {
   varchar,
   boolean,
   pgEnum,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import { relations, type InferSelectModel } from "drizzle-orm";
 import { createId } from "@paralleldrive/cuid2";
@@ -50,7 +51,7 @@ export const apiKeysTable = pgTable("api_keys", {
     .$defaultFn(() => `key_${createId()}`),
   name: varchar("name", { length: 255 }).notNull(),
   key: text("key").notNull(),
-  projectId: integer("project_id")
+  projectId: varchar("project_id", { length: 29 })
     .notNull()
     .references(() => projectsTable.id),
   isLive: boolean("is_live").notNull().default(false),
@@ -68,12 +69,47 @@ export const apiKeysTable = pgTable("api_keys", {
     withTimezone: true,
     mode: "date",
   }),
+  usage: integer("usage").default(0),
+});
+
+export const eventTable = pgTable("events", {
+  id: varchar("id", { length: 28 })
+    .$defaultFn(() => createId())
+    .primaryKey(),
+
+  projectId: varchar("project_id", { length: 29 })
+    .notNull()
+    .references(() => projectsTable.id, {
+      onDelete: "cascade",
+    }),
+  apiKeyId: varchar("api_key_id", { length: 29 })
+    .notNull()
+    .references(() => apiKeysTable.id, {
+      onDelete: "cascade",
+    }),
+
+  title: varchar("title", { length: 255 }).notNull(),
+  message: text("message"),
+
+  fields: jsonb("fields").$type<Array<{ name: string; value: string }>>(),
+
+  status: varchar("status", { length: 50 })
+    .$type<"sent" | "failed">()
+    .notNull(),
+
+  errorMessage: text("error_message"),
+  retryCount: integer("retry_count").default(0),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+
+  metadata: jsonb("metadata").$type<Record<string, unknown>>(),
 });
 
 export type User = InferSelectModel<typeof userTable>;
 export type Session = InferSelectModel<typeof sessionTable>;
 export type Project = InferSelectModel<typeof projectsTable>;
 export type ApiKey = InferSelectModel<typeof apiKeysTable>;
+export type Event = InferSelectModel<typeof eventTable>;
 
 export const userRelations = relations(userTable, ({ many }) => ({
   sessions: many(sessionTable),

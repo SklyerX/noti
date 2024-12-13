@@ -44,6 +44,7 @@
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-hook-form": "^7.54.0",
     "react-hotkeys-hook": "^4.6.1",
+    "recharts": "^2.15.0",
     "server-only": "^0.0.1",
     "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.5",
