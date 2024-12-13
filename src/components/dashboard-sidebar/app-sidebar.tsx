@@ -17,16 +17,16 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import type { User } from "@/db/schema";
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface Props extends React.ComponentProps<typeof Sidebar> {
+  user: Pick<User, "name" | "email" | "picture">;
+}
+
+export function AppSidebar({ user, ...props }: Props) {
   const { projectId } = useParams();
 
   const data = {
-    user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
-    },
     mainOptions: [
       {
         name: "Overview",
@@ -81,7 +81,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   );

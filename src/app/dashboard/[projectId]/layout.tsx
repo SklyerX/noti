@@ -6,6 +6,8 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard-sidebar/app-sidebar";
 import { cookies } from "next/headers";
+import { getCurrentUser } from "@/lib/session";
+import type { User } from "@/db/schema";
 
 export default async function ProjectLayout({
   children,
@@ -15,9 +17,11 @@ export default async function ProjectLayout({
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
 
+  const user = await getCurrentUser();
+
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <AppSidebar />
+      <AppSidebar user={user as User} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex items-center gap-2 px-4">
