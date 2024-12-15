@@ -76,6 +76,7 @@ export default async function Page({ params: { projectId } }: Props) {
           </CardContent>
         </Card>
       </div>
+      {/* TODO: add recent events */}
     </div>
   );
 }
