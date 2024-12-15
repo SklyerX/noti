@@ -53,7 +53,7 @@ const STEPS = [
           Next up, create a server and invite the bot to it. You can do this by
           clicking the button below.{" "}
           <Link
-            href="https://discord.com/oauth2/authorize?client_id=1316773226717904896"
+            href="https://discord.com/api/oauth2/authorize?client_id=1316773226717904896&permissions=0&scope=bot%20applications.commands"
             className="text-blue-500 underline"
           >
             Click here

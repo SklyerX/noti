@@ -1,6 +1,4 @@
 import Steps from "@/components/discord-linking/steps";
-import Link from "next/link";
-import React from "react";
 
 export default function LinkDiscord() {
   return (

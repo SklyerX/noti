@@ -20,7 +20,7 @@ export class ApiKeyManager {
     };
   }
 
-  private hashAPIKey(key: string): string {
+  hashAPIKey(key: string): string {
     return crypto.createHash("sha256").update(key).digest("hex");
   }
 
