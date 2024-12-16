@@ -59,6 +59,9 @@ export async function POST(req: Request) {
       description: message,
       timestamp: new Date().toISOString(),
       color: Number.parseInt(color),
+      footer: {
+        text: `Project - ${storedApiKey.project.name}`,
+      },
     });
 
     const [event] = await db
