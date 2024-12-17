@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { subscriptionTable } from "@/db/schema";
+import { type subscriptionStatusEnum, subscriptionTable } from "@/db/schema";
 import { env } from "@/env";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
@@ -35,6 +35,10 @@ async function webhookHandler(reqText: string, req: Request) {
         return handleSubscriptionEvent(event, "updated");
       case "customer.subscription.deleted":
         return handleSubscriptionEvent(event, "deleted");
+      case "invoice.payment_succeeded":
+        return handleInvoiceEvent(event, "succeeded");
+      case "invoice.payment_failed":
+        return handleInvoiceEvent(event, "failed");
       default:
         return new Response("Unhandled event type", {
           status: 400,
@@ -54,12 +58,15 @@ async function handleSubscriptionEvent(
 ) {
   const subscription = event.data.object as Stripe.Subscription;
 
+  console.log(subscription.metadata);
+
   const subscriptionData = {
     userId: Number.parseInt(subscription.metadata.userId),
     stripeSubscriptionId: subscription.id,
     stripeCustomerId: subscription.customer as string,
     stripePriceId: subscription.items.data[0].price.id,
-    status: subscription.status,
+    status:
+      subscription.status as (typeof subscriptionStatusEnum.enumValues)[number],
     startDate: new Date(subscription.start_date * 1000),
     endDate: subscription.ended_at
       ? new Date(subscription.ended_at * 1000)
@@ -77,10 +84,12 @@ async function handleSubscriptionEvent(
   try {
     switch (action) {
       case "created":
+        console.log("created", subscriptionData);
         await db.insert(subscriptionTable).values(subscriptionData);
         break;
 
       case "updated":
+        console.log("updated", subscriptionData);
         await db
           .update(subscriptionTable)
           .set(subscriptionData)
@@ -88,6 +97,7 @@ async function handleSubscriptionEvent(
         break;
 
       case "deleted":
+        console.log("deleted", subscriptionData);
         await db
           .update(subscriptionTable)
           .set({
@@ -103,6 +113,55 @@ async function handleSubscriptionEvent(
   } catch (e) {
     console.error("Error updating subscription:", e);
     return new Response("Error updating subscription", {
+      status: 500,
+    });
+  }
+}
+
+async function handleInvoiceEvent(
+  event: Stripe.Event,
+  status: "succeeded" | "failed"
+) {
+  const invoice = event.data.object as Stripe.Invoice;
+
+  if (!invoice.subscription)
+    return NextResponse.json({ success: false }, { status: 400 });
+
+  console.log("STRIPE::WEBHOOK", status, invoice);
+
+  try {
+    if (status === "succeeded") {
+      await db
+        .update(subscriptionTable)
+        .set({
+          status: "active",
+          updatedAt: new Date(),
+        })
+        .where(
+          eq(
+            subscriptionTable.stripeSubscriptionId,
+            invoice.subscription as string
+          )
+        );
+    } else {
+      await db
+        .update(subscriptionTable)
+        .set({
+          status: "past_due",
+          updatedAt: new Date(),
+        })
+        .where(
+          eq(
+            subscriptionTable.stripeSubscriptionId,
+            invoice.subscription as string
+          )
+        );
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    console.error("Error handling invoice event:", e);
+    return new Response("Error handling invoice event", {
       status: 500,
     });
   }

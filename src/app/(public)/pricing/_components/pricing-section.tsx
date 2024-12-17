@@ -18,28 +18,32 @@ import { CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { loadStripe, type Stripe } from "@stripe/stripe-js";
 import axios from "axios";
+import { useAuth } from "@/hooks/use-auth";
+import { STRIPE_PRICES } from "@/lib/stripe";
 
 export default function PricingSection() {
   const [isYearly, setIsYearly] = useState<boolean>(false);
   const [stripePromise, setStripePromise] =
     useState<Promise<Stripe | null> | null>(null);
 
+  const { user } = useAuth();
+
   useEffect(() => {
     setStripePromise(loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY));
   }, []);
 
-  //   TODO: create user hook for frontend
-
   const handleCheckout = async (priceId: string) => {
+    if (!user) return toast.error("Please login or sign up to purchase");
+
     try {
       const { data } = await axios.post(
         "/api/payments/create-checkout-session",
         {
-          userId: 1,
-          email: "test@test.com",
+          userId: user.id.toString(),
+          email: user.email,
           priceId,
         }
       );
@@ -59,51 +63,44 @@ export default function PricingSection() {
 
   return (
     <div className="mt-32">
-      <div className="flex flex-col items-center gap-3">
-        <motion.h3
-          initial={{ y: 10, opacity: 0 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-          className="text-4xl font-semibold text-center"
-        >
-          Plans for Your Needs
-        </motion.h3>
-        <motion.p
-          initial={{ y: 10, opacity: 0 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.3 }}
-          className="text-center text-muted-foreground w-4/6"
-        >
-          Select the best plan that fits you and your needs best. Need more or
-          less? Customize your subscription to fit your budget.
-        </motion.p>
-      </div>
-      <div className="mt-10">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <PricingSwitch onSwitch={(value) => setIsYearly(value === "1")} />
-        </motion.div>
-        <section className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-8 mt-8">
-          {PLANS.map((plan, i) => (
-            <PricingCard
-              key={plan.title}
-              index={i}
-              plan={plan}
-              user={{
-                id: 2,
-                name: "test",
-                email: "test@test.com",
-                picture: "",
-                discordId: "11231231",
-                githubId: "",
-                googleId: "",
-                username: "zxczxc",
-              }}
-              isYearly={isYearly}
-              handleCheckout={handleCheckout}
-            />
-          ))}
-        </section>
-      </div>
+      <AnimatePresence mode="wait">
+        <div className="flex flex-col items-center gap-3">
+          <motion.h3
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className="text-4xl font-semibold text-center"
+          >
+            Plans for Your Needs
+          </motion.h3>
+          <motion.p
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
+            className="text-center text-muted-foreground w-4/6"
+          >
+            Select the best plan that fits you and your needs best. Need more or
+            less? Customize your subscription to fit your budget.
+          </motion.p>
+        </div>
+        <div className="mt-10">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <PricingSwitch onSwitch={(value) => setIsYearly(value === "1")} />
+          </motion.div>
+          <section className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-8 mt-8">
+            {PLANS.map((plan, i) => (
+              <PricingCard
+                key={plan.title}
+                index={i}
+                plan={plan}
+                user={user}
+                isYearly={isYearly}
+                handleCheckout={handleCheckout}
+              />
+            ))}
+          </section>
+        </div>
+      </AnimatePresence>
     </div>
   );
 }
@@ -190,6 +187,7 @@ const PricingCard = ({
         </div>
         <CardFooter className="mt-2">
           <Button
+            disabled={plan.disabled}
             onClick={() => {
               if (user?.id) {
                 handleCheckout(
@@ -254,8 +252,8 @@ const PLANS: Plan[] = [
     monthlyPrice: 0,
     yearlyPrice: 0,
     description: "Get started with Noti",
-    priceIdMonthly: env.NEXT_PUBLIC_STRIPE_PRICE_ID,
-    priceIdYearly: env.NEXT_PUBLIC_STRIPE_PRICE_ID,
+    priceIdMonthly: "",
+    priceIdYearly: "",
     features: [
       "100 API Calls per month",
       "5 Projects",
@@ -269,8 +267,8 @@ const PLANS: Plan[] = [
     yearlyPrice: 90,
     description:
       "Perfect for small businesses / startups with a medium sized user base",
-    priceIdMonthly: env.NEXT_PUBLIC_STRIPE_PRICE_ID,
-    priceIdYearly: env.NEXT_PUBLIC_STRIPE_PRICE_ID,
+    priceIdMonthly: STRIPE_PRICES.BASIC_MONTHLY,
+    priceIdYearly: STRIPE_PRICES.BASIC_YEARLY,
     features: [
       "Everything in the free plan",
       "5000 API Calls per month",
@@ -284,8 +282,8 @@ const PLANS: Plan[] = [
     monthlyPrice: 50,
     yearlyPrice: 200,
     description: "Dedicated support and infrastructure to fit your needs",
-    priceIdMonthly: env.NEXT_PUBLIC_STRIPE_PRICE_ID,
-    priceIdYearly: env.NEXT_PUBLIC_STRIPE_PRICE_ID,
+    priceIdMonthly: STRIPE_PRICES.PLUS_MONTHLY,
+    priceIdYearly: STRIPE_PRICES.PLUS_YEARLY,
     features: [
       "Everything in the Basic plan",
       "Unlimited API Calls per month",
