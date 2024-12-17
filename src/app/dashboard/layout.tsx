@@ -1,4 +1,5 @@
 import { validateRequest } from "@/auth";
+import { Toaster } from "@/components/ui/sonner";
 import { redirect } from "next/navigation";
 import type React from "react";
 import LinkDiscord from "./link-discord";
