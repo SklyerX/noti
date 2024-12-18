@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { type subscriptionStatusEnum, subscriptionTable } from "@/db/schema";
 import { env } from "@/env";
+import { STRIPE_PRICES } from "@/lib/stripe";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
@@ -52,19 +53,28 @@ async function webhookHandler(reqText: string, req: Request) {
   }
 }
 
+const PRICE_TO_PLAN = Object.entries(STRIPE_PRICES).reduce(
+  (acc, [pricing, priceId]) => {
+    const planTier = pricing.startsWith("BASIC") ? "basic" : "plus";
+    acc[priceId] = planTier;
+    return acc;
+  },
+  {} as Record<string, "basic" | "plus">
+);
+
 async function handleSubscriptionEvent(
   event: Stripe.Event,
   action: "created" | "updated" | "deleted"
 ) {
   const subscription = event.data.object as Stripe.Subscription;
-
-  console.log(subscription.metadata);
+  const priceId = subscription.items.data[0].price.id;
 
   const subscriptionData = {
     userId: Number.parseInt(subscription.metadata.userId),
     stripeSubscriptionId: subscription.id,
     stripeCustomerId: subscription.customer as string,
-    stripePriceId: subscription.items.data[0].price.id,
+    stripePriceId: priceId,
+    planTier: PRICE_TO_PLAN[priceId] ?? "free",
     status:
       subscription.status as (typeof subscriptionStatusEnum.enumValues)[number],
     startDate: new Date(subscription.start_date * 1000),

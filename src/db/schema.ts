@@ -173,9 +173,13 @@ export type ApiKey = InferSelectModel<typeof apiKeysTable>;
 export type Event = InferSelectModel<typeof eventTable>;
 export type Subscription = InferSelectModel<typeof subscriptionTable>;
 
-export const userRelations = relations(userTable, ({ many }) => ({
+export const userRelations = relations(userTable, ({ many, one }) => ({
   sessions: many(sessionTable),
   projects: many(projectsTable),
+  subscription: one(subscriptionTable, {
+    fields: [userTable.id],
+    references: [subscriptionTable.userId],
+  }),
 }));
 
 export const sessionRelations = relations(sessionTable, ({ one }) => ({

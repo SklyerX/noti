@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export function CreateProjectButton() {
-  const { execute, status } = useAction(createProjectAction);
+  const { execute, status, result } = useAction(createProjectAction);
 
   const [open, setOpen] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
@@ -36,7 +36,8 @@ export function CreateProjectButton() {
     }
     if (status === "hasErrored") {
       toast.error("Failed to create project", {
-        description: "Something went wrong, please try again.",
+        description:
+          result.serverError || "Something went wrong, please try again.",
       });
     }
   }, [status]);
