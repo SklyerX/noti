@@ -256,7 +256,7 @@ const PLANS: Plan[] = [
     priceIdYearly: "",
     features: [
       "100 API Calls per month",
-      "5 Projects",
+      "1 Projects",
       "1 month data retention",
     ],
     disabled: true,
@@ -272,7 +272,7 @@ const PLANS: Plan[] = [
     features: [
       "Everything in the free plan",
       "5000 API Calls per month",
-      "15 Projects",
+      "10 Projects",
       "6 month data retention",
     ],
     popular: true,
