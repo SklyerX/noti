@@ -5,7 +5,43 @@ import { ZodError } from "zod";
 import { apiKeysTable, eventTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { DiscordNotificationClient } from "@/lib/classes/discord-notification";
+import { getRedisClient } from "@/lib/redis";
+import { PLAN_LIMITS } from "@/lib/utils";
 
+async function checkAPILimits(
+  apiKey: string,
+  userPlan: "free" | "basic" | "plus"
+) {
+  const redis = getRedisClient();
+
+  const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+  const key = `usage:${apiKey}`;
+
+  const monthlyLimit = PLAN_LIMITS[userPlan];
+
+  const usage = await redis.hget(key, currentMonth);
+  const currentUsage = usage ? Number.parseInt(usage as string) : 0;
+
+  console.log("CHECK_API:", usage, currentUsage);
+
+  if (currentUsage >= monthlyLimit.maxApiCalls) {
+    return {
+      allowed: false,
+      limit: monthlyLimit.maxApiCalls,
+      remaining: 0,
+      usage: currentUsage,
+    };
+  }
+
+  await redis.hincrby(key, currentMonth, 1);
+
+  return {
+    allowed: true,
+    limit: monthlyLimit.maxApiCalls,
+    remaining: monthlyLimit.maxApiCalls - currentUsage - 1, // subtract 1 because we just incremented
+    usage: currentUsage + 1, // add 1 because we just incremented
+  };
+}
 export async function POST(req: Request) {
   const body = await req.json();
   const headers = req.headers;
@@ -48,6 +84,32 @@ export async function POST(req: Request) {
         status: 401,
       });
     }
+
+    const userPlan = await db.query.subscriptionTable.findFirst({
+      where: (fields, { eq }) =>
+        eq(fields.userId, storedApiKey.project.user.id),
+    });
+
+    const limitResult = await checkAPILimits(
+      storedApiKey.id,
+      userPlan?.planTier || "free"
+    );
+
+    if (limitResult.allowed === false)
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: "API Limit Exceeded",
+          info: {
+            remaining: limitResult.remaining,
+            limit: limitResult.limit,
+            usage: limitResult.usage,
+          },
+        }),
+        {
+          status: 429,
+        }
+      );
 
     const discordClient = new DiscordNotificationClient(
       storedApiKey.project.user.discordId as string
@@ -98,6 +160,7 @@ export async function POST(req: Request) {
       }
     );
   } catch (e) {
+    console.log(e);
     if (e instanceof ZodError) {
       return new Response(e.message, {
         status: 400,

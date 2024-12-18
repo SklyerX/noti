@@ -6,8 +6,8 @@ import {
   timestamp,
   varchar,
   boolean,
-  pgEnum,
   jsonb,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import { relations, type InferSelectModel } from "drizzle-orm";
 import { createId } from "@paralleldrive/cuid2";
@@ -105,11 +105,73 @@ export const eventTable = pgTable("events", {
   metadata: jsonb("metadata").$type<Record<string, unknown>>(),
 });
 
+export const subscriptionStatusEnum = pgEnum("subscription_status", [
+  "incomplete",
+  "incomplete_expired",
+  "trialing",
+  "active",
+  "past_due",
+  "canceled",
+  "unpaid",
+  "paused",
+]);
+
+export const planTierEnum = pgEnum("plan_tier", ["free", "basic", "plus"]);
+
+export const subscriptionTable = pgTable("subscriptions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => userTable.id),
+  stripeSubscriptionId: varchar("stripe_subscription_id", { length: 255 })
+    .notNull()
+    .unique(),
+  stripeCustomerId: varchar("stripe_customer_id", { length: 255 }).notNull(),
+  stripePriceId: varchar("stripe_price_id", { length: 255 }).notNull(),
+  planTier: planTierEnum("plan_tier").notNull().default("free"),
+  status: subscriptionStatusEnum("status").notNull(),
+  startDate: timestamp("start_date", {
+    withTimezone: true,
+    mode: "date",
+  }).notNull(),
+  endDate: timestamp("end_date", {
+    withTimezone: true,
+    mode: "date",
+  }),
+  cancelDate: timestamp("cancel_date", {
+    withTimezone: true,
+    mode: "date",
+  }),
+  trialEndDate: timestamp("trial_end_date", {
+    withTimezone: true,
+    mode: "date",
+  }),
+  lastEventDate: timestamp("last_event_date", {
+    withTimezone: true,
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "date",
+  })
+    .notNull()
+    .defaultNow(),
+});
+
 export type User = InferSelectModel<typeof userTable>;
 export type Session = InferSelectModel<typeof sessionTable>;
 export type Project = InferSelectModel<typeof projectsTable>;
 export type ApiKey = InferSelectModel<typeof apiKeysTable>;
 export type Event = InferSelectModel<typeof eventTable>;
+export type Subscription = InferSelectModel<typeof subscriptionTable>;
 
 export const userRelations = relations(userTable, ({ many }) => ({
   sessions: many(sessionTable),
@@ -137,3 +199,13 @@ export const apiKeyRelations = relations(apiKeysTable, ({ one }) => ({
     references: [projectsTable.id],
   }),
 }));
+
+export const subscriptionRelations = relations(
+  subscriptionTable,
+  ({ one }) => ({
+    user: one(userTable, {
+      fields: [subscriptionTable.userId],
+      references: [userTable.id],
+    }),
+  })
+);

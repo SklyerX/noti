@@ -1,5 +1,4 @@
 import { validateRequest } from "@/auth";
-import { Toaster } from "@/components/ui/sonner";
 import { redirect } from "next/navigation";
 import type React from "react";
 import LinkDiscord from "./link-discord";
@@ -16,10 +15,5 @@ export default async function DashboardLayout({
 
   if (!user.discordId) return <LinkDiscord />;
 
-  return (
-    <main>
-      <Toaster />
-      {children}
-    </main>
-  );
+  return <main>{children}</main>;
 }
