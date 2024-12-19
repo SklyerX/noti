@@ -1,4 +1,3 @@
-// app/login/google/route.ts
 import { generateState, generateCodeVerifier } from "arctic";
 import { google } from "@/auth";
 import { cookies } from "next/headers";
@@ -27,6 +26,13 @@ export async function GET(): Promise<Response> {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 10, // 10 minutes
+    sameSite: "lax",
+  });
+
+  cookieStore.set("last_used", "google", {
+    path: "/",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
   });
 

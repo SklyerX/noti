@@ -1,5 +1,9 @@
-import { db } from "@/db";
 import "server-only";
+
+import { db } from "@/db";
+import { env } from "@/env";
+import { Resend } from "resend";
+import type { ReactNode } from "react";
 
 export function getBaseUrl(): string {
   const isProduction = process.env.NODE_ENV === "production";
@@ -16,4 +20,23 @@ export async function getUserPlanTier(userId: number) {
   });
 
   return plan?.planTier ?? "free";
+}
+
+const resend = new Resend(env.RESEND_API_KEY);
+
+export async function sendEmail(
+  email: string,
+  subject: string,
+  react: ReactNode
+) {
+  const { data, error } = await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: [email],
+    subject,
+    react,
+  });
+
+  if (error) throw new Error(error.message);
+
+  return data;
 }

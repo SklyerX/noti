@@ -1,4 +1,4 @@
-import crypto from "node:crypto";
+import crypto from "crypto";
 
 export class ApiKeyManager {
   private API_KEY_LENGTH = 32;

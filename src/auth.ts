@@ -7,7 +7,7 @@ import {
 } from "@oslojs/encoding";
 import { eq } from "drizzle-orm";
 import { getSessionToken } from "./lib/session";
-import { Google } from "arctic";
+import { GitHub, Google } from "arctic";
 import { env } from "./env";
 
 const SESSION_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
@@ -20,6 +20,12 @@ export const google = new Google(
   env.GOOGLE_CLIENT_ID,
   env.GOOGLE_CLIENT_SECRET,
   `${BASE_URL}/login/google/callback`
+);
+
+export const github = new GitHub(
+  env.GITHUB_CLIENT_ID,
+  env.GITHUB_CLIENT_SECRET,
+  null
 );
 
 export async function validateRequest(): Promise<SessionValidationResult> {

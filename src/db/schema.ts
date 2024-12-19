@@ -166,12 +166,21 @@ export const subscriptionTable = pgTable("subscriptions", {
     .defaultNow(),
 });
 
+export const magicLinkTable = pgTable("magic_links", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  token: text("token").notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+});
+
 export type User = InferSelectModel<typeof userTable>;
 export type Session = InferSelectModel<typeof sessionTable>;
 export type Project = InferSelectModel<typeof projectsTable>;
 export type ApiKey = InferSelectModel<typeof apiKeysTable>;
 export type Event = InferSelectModel<typeof eventTable>;
 export type Subscription = InferSelectModel<typeof subscriptionTable>;
+export type MagicLink = InferSelectModel<typeof magicLinkTable>;
 
 export const userRelations = relations(userTable, ({ many, one }) => ({
   sessions: many(sessionTable),

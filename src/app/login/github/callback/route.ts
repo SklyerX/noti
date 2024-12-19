@@ -1,32 +1,27 @@
-// app/login/google/callback/route.ts
-import { setSessionTokenCookie } from "@/lib/session";
-import { createSession, generateSessionToken, google } from "@/auth";
+import { generateSessionToken, createSession } from "@/auth";
 import { cookies } from "next/headers";
-import { decodeIdToken } from "arctic";
-import { ObjectParser } from "@pilcrowjs/object-parser";
 
 import type { OAuth2Tokens } from "arctic";
 import { db } from "@/db";
 import { userTable } from "@/db/schema";
+import { github } from "@/auth";
+import { setSessionTokenCookie } from "@/lib/session";
 import { createOAuthErrorResponse, OAuthErrorCode } from "@/lib/error";
 
-const REDIRECT_PATH = "/dashboard";
+interface GithubUserEmailResponse {
+  email: string;
+  primary: boolean;
+  verified: boolean;
+  visibility: string;
+}
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
-  const cookieStore = await cookies();
-
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
-  const storedState = cookieStore.get("google_oauth_state")?.value ?? null;
-  const codeVerifier = cookieStore.get("google_code_verifier")?.value ?? null;
-
-  if (
-    code === null ||
-    state === null ||
-    storedState === null ||
-    codeVerifier === null
-  ) {
+  const cookieStore = await cookies();
+  const storedState = cookieStore.get("github_oauth_state")?.value ?? null;
+  if (code === null || state === null || storedState === null) {
     return new Response(null, {
       status: 400,
     });
@@ -39,7 +34,7 @@ export async function GET(request: Request): Promise<Response> {
 
   let tokens: OAuth2Tokens;
   try {
-    tokens = await google.validateAuthorizationCode(code, codeVerifier);
+    tokens = await github.validateAuthorizationCode(code);
   } catch (e) {
     // Invalid code or client credentials
     return new Response(null, {
@@ -47,16 +42,33 @@ export async function GET(request: Request): Promise<Response> {
     });
   }
 
-  const claims = decodeIdToken(tokens.idToken());
-  const claimsParser = new ObjectParser(claims);
+  const githubUserResponse = await fetch("https://api.github.com/user", {
+    headers: {
+      Authorization: `Bearer ${tokens.accessToken()}`,
+    },
+  });
 
-  const googleId = claimsParser.getString("sub");
-  const name = claimsParser.getString("name");
-  const picture = claimsParser.getString("picture");
-  const email = claimsParser.getString("email");
+  const githubUserEmail = await fetch("https://api.github.com/user/emails", {
+    headers: {
+      Authorization: `Bearer ${tokens.accessToken()}`,
+    },
+  });
+
+  const githubUser = await githubUserResponse.json();
+  const githubEmailResponse =
+    (await githubUserEmail.json()) as Array<GithubUserEmailResponse>;
+
+  const githubUserId = githubUser.id;
+  const githubUsername = githubUser.login;
+  const githubAvatarUrl = githubUser.avatar_url;
+
+  const githubEmail = githubEmailResponse.find((x) => x.primary);
+
+  if (!githubEmail)
+    return createOAuthErrorResponse(OAuthErrorCode.GITHUB_EMAIL_MISSING);
 
   const existingEmail = await db.query.userTable.findFirst({
-    where: (fields, { eq }) => eq(fields.email, email),
+    where: (fields, { eq }) => eq(fields.email, githubEmail.email),
   });
 
   if (existingEmail) {
@@ -64,19 +76,18 @@ export async function GET(request: Request): Promise<Response> {
   }
 
   const existingUser = await db.query.userTable.findFirst({
-    where: (fields, { eq }) => eq(fields.googleId, googleId),
+    where: (fields, { eq }) => eq(fields.githubId, githubUser),
   });
 
   if (existingUser) {
     const sessionToken = generateSessionToken();
     const session = await createSession(sessionToken, existingUser.id);
-
     await setSessionTokenCookie(sessionToken, session.expiresAt);
 
     return new Response(null, {
       status: 302,
       headers: {
-        Location: REDIRECT_PATH,
+        Location: "/",
       },
     });
   }
@@ -84,10 +95,11 @@ export async function GET(request: Request): Promise<Response> {
   const [user] = await db
     .insert(userTable)
     .values({
-      googleId: googleId,
-      email,
-      picture,
-      name,
+      githubId: githubUserId,
+      email: githubEmail.email,
+      picture: githubAvatarUrl,
+      name: githubUsername,
+      username: githubUsername,
     })
     .returning();
 
@@ -99,7 +111,7 @@ export async function GET(request: Request): Promise<Response> {
   return new Response(null, {
     status: 302,
     headers: {
-      Location: REDIRECT_PATH,
+      Location: "/",
     },
   });
 }
