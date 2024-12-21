@@ -8,7 +8,7 @@ import {
 } from "./ui/dropdown-menu";
 import UserAvatar from "./user-avatar";
 import Link from "next/link";
-import { DollarSign, LogOut, Settings } from "lucide-react";
+import { DollarSign, LogOut, Settings, User as UserIcon } from "lucide-react";
 
 interface Props {
   user: User;
@@ -32,15 +32,9 @@ export default function UserDropdown(props: Props) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/dashboard/settings" className="flex items-center gap-2">
-            <Settings className="size-4" />
-            <span>Settings</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/billing" className="flex items-center gap-2">
-            <DollarSign className="size-4" />
-            <span>Billing</span>
+          <Link href="/dashboard/account" className="flex items-center gap-2">
+            <UserIcon className="size-4" />
+            <span>Account</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

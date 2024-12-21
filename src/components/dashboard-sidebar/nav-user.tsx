@@ -92,13 +92,13 @@ export function NavUser({ user }: Props) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/dashboard/settings">
+                <Link href="/dashboard/account">
                   <BadgeCheck />
                   Account
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/dashboard/settings/billing">
+                <Link href="/dashboard/account/billing">
                   <CreditCard />
                   Billing
                 </Link>
