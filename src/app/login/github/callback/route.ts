@@ -67,16 +67,8 @@ export async function GET(request: Request): Promise<Response> {
   if (!githubEmail)
     return createOAuthErrorResponse(OAuthErrorCode.GITHUB_EMAIL_MISSING);
 
-  const existingEmail = await db.query.userTable.findFirst({
-    where: (fields, { eq }) => eq(fields.email, githubEmail.email),
-  });
-
-  if (existingEmail) {
-    return createOAuthErrorResponse(OAuthErrorCode.EMAIL_EXISTS);
-  }
-
   const existingUser = await db.query.userTable.findFirst({
-    where: (fields, { eq }) => eq(fields.githubId, githubUser),
+    where: (fields, { eq }) => eq(fields.githubId, githubUserId),
   });
 
   if (existingUser) {
@@ -84,13 +76,17 @@ export async function GET(request: Request): Promise<Response> {
     const session = await createSession(sessionToken, existingUser.id);
     await setSessionTokenCookie(sessionToken, session.expiresAt);
 
+    console.log("USER", existingUser, session.id);
+
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/",
+        Location: "/dashboard",
       },
     });
   }
+
+  console.log("Somehow a user wasn't found idk why");
 
   const [user] = await db
     .insert(userTable)
@@ -111,7 +107,7 @@ export async function GET(request: Request): Promise<Response> {
   return new Response(null, {
     status: 302,
     headers: {
-      Location: "/",
+      Location: "/dashboard",
     },
   });
 }

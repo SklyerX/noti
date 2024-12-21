@@ -10,21 +10,11 @@ import { toast } from "sonner";
 export default function LogoutButton() {
   const { execute, status } = useAction(logoutAction);
 
-  const handleLogout = () => {
-    toast.loading("Logging out...", {
-      id: "logout-toast",
-    });
-    execute();
-  };
-
-  useEffect(() => {
-    if (status === "hasSucceeded") {
-      toast.dismiss("logout-toast");
-    }
-  }, [status]);
-
   return (
-    <DropdownMenuItem disabled={status === "executing"} onClick={handleLogout}>
+    <DropdownMenuItem
+      disabled={status === "executing"}
+      onClick={() => execute()}
+    >
       <LogOut />
       Logout
     </DropdownMenuItem>
