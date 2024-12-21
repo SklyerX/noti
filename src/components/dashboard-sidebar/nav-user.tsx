@@ -2,7 +2,6 @@
 
 import {
   BadgeCheck,
-  Bell,
   ChevronsUpDown,
   CreditCard,
   LogOut,
@@ -28,6 +27,7 @@ import {
 import type { User } from "@/db/schema";
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
+import LogoutButton from "../logout-button";
 
 interface Props {
   user: Pick<User, "name" | "email" | "picture">;
@@ -105,10 +105,7 @@ export function NavUser({ user }: Props) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            <LogoutButton />
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

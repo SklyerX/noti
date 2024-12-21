@@ -1,9 +1,17 @@
 import "server-only";
 
-import { createSession, generateSessionToken, validateRequest } from "@/auth";
+import {
+  createSession,
+  generateSessionToken,
+  invalidateSession,
+  validateRequest,
+  validateSessionToken,
+  type SessionValidationResult,
+} from "@/auth";
 import { cookies } from "next/headers";
 import type { User } from "@/db/schema";
 import { cache } from "react";
+import { redirect } from "next/navigation";
 
 const SESSION_COOKIE_NAME = "session";
 
@@ -19,6 +27,17 @@ export async function setSessionTokenCookie(
     path: "/",
     expires: expiresAt,
     secure: process.env.NODE_ENV === "production",
+  });
+}
+
+export async function deleteSessionTokenCookie(): Promise<void> {
+  const cookieStore = await cookies();
+  cookieStore.set("session", "", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 0,
+    path: "/",
   });
 }
 
@@ -43,4 +62,35 @@ export async function setSession(userId: number): Promise<void> {
   const token = generateSessionToken();
   const session = await createSession(token, userId);
   setSessionTokenCookie(token, session.expiresAt);
+}
+
+export const getCurrentSession = cache(
+  async (): Promise<SessionValidationResult> => {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("session")?.value ?? null;
+    if (token === null) {
+      return { session: null, user: null };
+    }
+    const result = await validateSessionToken(token);
+    return result;
+  }
+);
+
+export async function logout(): Promise<ActionResult> {
+  const { session } = await getCurrentSession();
+
+  if (!session) {
+    return {
+      error: "Unauthorized",
+    };
+  }
+
+  await invalidateSession(session.id);
+  await deleteSessionTokenCookie();
+
+  return redirect("/login");
+}
+
+interface ActionResult {
+  error: string | null;
 }

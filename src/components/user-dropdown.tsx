@@ -9,6 +9,7 @@ import {
 import UserAvatar from "./user-avatar";
 import Link from "next/link";
 import { DollarSign, LogOut, Settings, User as UserIcon } from "lucide-react";
+import LogoutButton from "./logout-button";
 
 interface Props {
   user: User;
@@ -38,12 +39,7 @@ export default function UserDropdown(props: Props) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/billing" className="flex items-center gap-2">
-            <LogOut className="size-4" />
-            <span>Sign out</span>
-          </Link>
-        </DropdownMenuItem>
+        <LogoutButton />
       </DropdownMenuContent>
     </DropdownMenu>
   );
