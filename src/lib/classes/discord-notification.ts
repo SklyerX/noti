@@ -21,13 +21,16 @@ export class DiscordNotificationClient {
     }) as Promise<RESTPostAPICurrentUserCreateDMChannelResult>;
   }
 
-  async send(embed: APIEmbed) {
-    const channel = await this.createDM();
-
-    this.rest.post(Routes.channelMessages(channel.id), {
-      body: {
-        embeds: [embed],
-      },
-    });
+  send(embed: APIEmbed): Promise<{ error: Error | null }> {
+    return this.createDM()
+      .then((channel) => {
+        return this.rest.post(Routes.channelMessages(channel.id), {
+          body: {
+            embeds: [embed],
+          },
+        });
+      })
+      .then(() => ({ error: null }))
+      .catch((error) => ({ error }));
   }
 }

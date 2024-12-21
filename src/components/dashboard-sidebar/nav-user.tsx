@@ -26,6 +26,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import type { User } from "@/db/schema";
+import { useAuth } from "@/hooks/use-auth";
+import Link from "next/link";
 
 interface Props {
   user: Pick<User, "name" | "email" | "picture">;
@@ -33,6 +35,7 @@ interface Props {
 
 export function NavUser({ user }: Props) {
   const { isMobile } = useSidebar();
+  const userData = useAuth();
 
   return (
     <SidebarMenu>
@@ -74,24 +77,31 @@ export function NavUser({ user }: Props) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
+              <DropdownMenuItem
+                asChild
+                disabled={
+                  userData.user?.planTier !== "free" || !userData.user?.planTier
+                }
+              >
+                <Link href="/pricing">
+                  <Sparkles />
+                  Upgrade to Pro
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/settings">
+                  <BadgeCheck />
+                  Account
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/settings/billing">
+                  <CreditCard />
+                  Billing
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

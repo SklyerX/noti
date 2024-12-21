@@ -1,8 +1,8 @@
 import { useEffect, useCallback } from "react";
-import { useAuthStore } from "@/store/auth";
+import { useAuthStore, type UserPlan } from "@/store/auth";
 import type { User } from "@/db/schema";
 
-let cachedUser: { user: User; timestamp: number } | null = null;
+let cachedUser: { user: UserPlan; timestamp: number } | null = null;
 const CACHE_DURATION = 1000 * 60;
 
 export function useAuth() {

@@ -115,7 +115,7 @@ export async function POST(req: Request) {
       storedApiKey.project.user.discordId as string
     );
 
-    await discordClient.send({
+    const { error } = await discordClient.send({
       fields,
       title,
       description: message,
@@ -135,7 +135,8 @@ export async function POST(req: Request) {
         message,
         fields,
         metadata,
-        status: "sent",
+        status: error ? "failed" : "sent",
+        errorMessage: error?.message,
       })
       .returning();
 
@@ -149,7 +150,7 @@ export async function POST(req: Request) {
 
     return new Response(
       JSON.stringify({
-        success: true,
+        success: error === null,
         eventId: event.id,
       }),
       {

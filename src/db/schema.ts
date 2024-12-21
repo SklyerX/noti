@@ -53,7 +53,9 @@ export const apiKeysTable = pgTable("api_keys", {
   key: text("key").notNull(),
   projectId: varchar("project_id", { length: 29 })
     .notNull()
-    .references(() => projectsTable.id),
+    .references(() => projectsTable.id, {
+      onDelete: "cascade",
+    }),
   isLive: boolean("is_live").notNull().default(false),
   createdAt: timestamp("created_at", {
     withTimezone: true,
