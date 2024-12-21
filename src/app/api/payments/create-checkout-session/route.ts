@@ -14,8 +14,6 @@ export async function POST(req: Request) {
 
   // TODO: CHECK to see if userId is valid, email is valid, and if priceId is from our list of plans
 
-  console.log("CHECKOUT::STRIPE", userId, priceId);
-
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -32,8 +30,6 @@ export async function POST(req: Request) {
         },
       },
     });
-
-    console.log("CHECKOUT::STRIPE", session);
 
     return NextResponse.json({
       sessionId: session.id,

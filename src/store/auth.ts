@@ -1,14 +1,17 @@
 import { create } from "zustand";
-import type { User } from "@/db/schema";
+import type { planTierEnum, User } from "@/db/schema";
 
+export type UserPlan = User & {
+  planTier: (typeof planTierEnum.enumValues)[number] | null;
+};
 interface AuthState {
-  user: User | null;
+  user: UserPlan | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: Error | null;
 
   // Actions
-  setUser: (user: User | null) => void;
+  setUser: (user: UserPlan | null) => void;
   setError: (error: Error | null) => void;
   setLoading: (isLoading: boolean) => void;
   reset: () => void;
