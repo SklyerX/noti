@@ -168,13 +168,30 @@ export const subscriptionTable = pgTable("subscriptions", {
     .defaultNow(),
 });
 
+export const magicLinkTypeEnum = pgEnum("magic_link_type", [
+  "login",
+  "email_change",
+]);
+
 export const magicLinkTable = pgTable("magic_links", {
   id: serial("id").primaryKey(),
-  email: text("email").notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  type: magicLinkTypeEnum("type").notNull(),
+  userId: integer("user_id").references(() => userTable.id),
   token: text("token").notNull(),
+  metadata: jsonb("metadata").$type<Record<string, unknown>>().notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
   expiresAt: timestamp("expires_at").notNull(),
 });
+
+export type MagicLinkMetadata = {
+  login: {
+    email: string;
+  };
+  email_change: {
+    currentEmail: string;
+    newEmail: string;
+  };
+};
 
 export type User = InferSelectModel<typeof userTable>;
 export type Session = InferSelectModel<typeof sessionTable>;

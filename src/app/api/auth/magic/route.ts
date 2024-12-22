@@ -20,13 +20,20 @@ export async function GET(request: Request) {
     return new Response(null, { status: 302, headers: { Location: "/login" } });
   }
 
-  const emailFirstPart = magicLink.email.split("@")[0];
+  const metadata = magicLink.metadata as { email: string };
+  const email = metadata.email;
+
+  if (!email) {
+    return new Response(null, { status: 302, headers: { Location: "/login" } });
+  }
+
+  const emailFirstPart = email.split("@")[0];
   const formattedName = emailFirstPart.replaceAll(".", "");
 
   const [user] = await db
     .insert(userTable)
     .values({
-      email: magicLink.email,
+      email: email,
       username: formattedName,
       name: formattedName,
       picture: `https://api.dicebear.com/9.x/glass/svg?seed=${formattedName}`,
