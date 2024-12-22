@@ -30,7 +30,7 @@ export async function sendEmail(
   react: ReactNode
 ) {
   const { data, error } = await resend.emails.send({
-    from: "Acme <onboarding@resend.dev>",
+    from: "actions@noti.skylerx.ir",
     to: [email],
     subject,
     react,

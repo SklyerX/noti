@@ -21,6 +21,7 @@ export const userTable = pgTable("users", {
   picture: text("picture").notNull(),
   name: varchar("name", { length: 255 }),
   discordId: varchar("discord_id", { length: 255 }).unique(),
+  emailVerified: boolean("email_verified").default(false),
 });
 
 export const sessionTable = pgTable("sessions", {
@@ -187,9 +188,8 @@ export type MagicLinkMetadata = {
   login: {
     email: string;
   };
-  email_change: {
-    currentEmail: string;
-    newEmail: string;
+  reset_email: {
+    email: string;
   };
 };
 

@@ -13,13 +13,17 @@ import {
 
 interface MagicLinkEmailProps {
   token: string;
+  redirectTo?: string;
 }
 
 const baseUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
 
-export function MagicLinkEmail({ token }: MagicLinkEmailProps) {
+export function MagicLinkEmail({ token, redirectTo }: MagicLinkEmailProps) {
+  const redirectURL = redirectTo ?? "/api/auth/magic";
+  const fullUrl = `${baseUrl}${redirectURL}?token=${token}`;
+
   return (
     <Html>
       <Head />
@@ -35,10 +39,7 @@ export function MagicLinkEmail({ token }: MagicLinkEmailProps) {
           <Heading style={heading}>🪄 Your magic link</Heading>
           <Section style={body}>
             <Text style={paragraph}>
-              <Link
-                style={link}
-                href={`${baseUrl}/api/auth/magic?token=${token}`}
-              >
+              <Link style={link} href={fullUrl}>
                 👉 Click here to sign in 👈
               </Link>
             </Text>
