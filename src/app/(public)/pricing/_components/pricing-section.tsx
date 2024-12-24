@@ -15,12 +15,12 @@ import type { User } from "@/db/schema";
 import { env } from "@/env";
 import { cn } from "@/lib/utils";
 import { CheckCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
 import { loadStripe, type Stripe } from "@stripe/stripe-js";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useAuth } from "@/hooks/use-auth";
 import { STRIPE_PRICES } from "@/lib/stripe";
 
@@ -57,6 +57,11 @@ export default function PricingSection() {
       return response;
     } catch (e) {
       console.error(e);
+      if (e instanceof AxiosError) {
+        if (e.status === 400 && e.response?.data.redirect)
+          redirect("/dashboard/account/billing");
+      }
+
       toast.error("Failed to checkout");
     }
   };

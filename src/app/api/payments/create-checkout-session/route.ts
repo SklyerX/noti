@@ -1,3 +1,4 @@
+import { db } from "@/db";
 import { env } from "@/env";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
@@ -11,6 +12,44 @@ const BASE_URL =
 
 export async function POST(req: Request) {
   const { userId, email, priceId } = await req.json();
+
+  const price = await stripe.prices.retrieve(priceId);
+
+  console.log("CREATE_CHECKOUT_SESSIONS");
+
+  if (!price) {
+    console.log("Invalid price");
+    return NextResponse.json({ error: "Invalid price" }, { status: 400 });
+  }
+
+  const existingUser = await db.query.userTable.findFirst({
+    where: (fields, { eq }) => eq(fields.id, userId),
+  });
+
+  if (!existingUser) {
+    console.log("Invalid user");
+    return NextResponse.json({ error: "Invalid user" }, { status: 400 });
+  }
+
+  const customers = await stripe.customers.list({
+    email: email,
+    limit: 1,
+  });
+
+  if (customers.data.length > 0) {
+    const subscriptions = await stripe.subscriptions.list({
+      customer: customers.data[0].id,
+      status: "active",
+      limit: 1,
+    });
+
+    if (subscriptions.data.length > 0) {
+      return NextResponse.json(
+        { error: "User already has an active subscription", redirect: true },
+        { status: 400 }
+      );
+    }
+  }
 
   // TODO: CHECK to see if userId is valid, email is valid, and if priceId is from our list of plans
 
