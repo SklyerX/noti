@@ -51,8 +51,6 @@ export async function POST(req: Request) {
     }
   }
 
-  // TODO: CHECK to see if userId is valid, email is valid, and if priceId is from our list of plans
-
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
