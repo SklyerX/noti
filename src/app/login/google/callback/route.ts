@@ -85,6 +85,7 @@ export async function GET(request: Request): Promise<Response> {
     .insert(userTable)
     .values({
       googleId: googleId,
+      emailVerified: true,
       email,
       picture,
       name,

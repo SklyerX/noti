@@ -93,6 +93,7 @@ export async function GET(request: Request): Promise<Response> {
     .values({
       githubId: githubUserId,
       email: githubEmail.email,
+      emailVerified: true,
       picture: githubAvatarUrl,
       name: githubUsername,
       username: githubUsername,
