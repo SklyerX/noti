@@ -36,13 +36,21 @@ export default function EventsPage() {
 
   useEffect(() => {
     if (status === "hasSucceeded" && result.data) {
-      // TODO: fix type
-      // @ts-ignore -> I know shitty but it works, I'm sorry.
-      setAllEvents((prev) => [...prev, ...(result.data?.events || [])]);
+      // Only add new events that aren't already in the array
+      const newEvents = result.data.events || [];
+      // @ts-ignore
+      setAllEvents((prev) => {
+        const existingIds = new Set(prev.map((event) => event.id));
+        const uniqueNewEvents = newEvents.filter(
+          (event) => !existingIds.has(event.id)
+        );
+        return [...prev, ...uniqueNewEvents];
+      });
+
       setHasMorePages(currentPage < result.data.metadata.totalPages);
       setIsLoading(false);
     }
-  }, [status, result.data]);
+  }, [status, result.data, currentPage]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
