@@ -40,6 +40,8 @@ async function webhookHandler(reqText: string, req: Request) {
         return handleInvoiceEvent(event, "succeeded");
       case "invoice.payment_failed":
         return handleInvoiceEvent(event, "failed");
+      case "checkout.session.completed":
+        return handleCheckoutSessionCompleted(event);
       default:
         return new Response("Unhandled event type", {
           status: 400,
@@ -69,14 +71,17 @@ async function handleSubscriptionEvent(
   const subscription = event.data.object as Stripe.Subscription;
   const priceId = subscription.items.data[0].price.id;
 
+  console.log("STRIPE::WEBHOOK", action, `status: ${subscription.status}`);
+
   const subscriptionData = {
     userId: Number.parseInt(subscription.metadata.userId),
     stripeSubscriptionId: subscription.id,
     stripeCustomerId: subscription.customer as string,
     stripePriceId: priceId,
     planTier: PRICE_TO_PLAN[priceId] ?? "free",
-    status:
-      subscription.status as (typeof subscriptionStatusEnum.enumValues)[number],
+    status: subscription.cancel_at_period_end
+      ? "cancel_pending" // New status for subscriptions that will cancel
+      : (subscription.status as (typeof subscriptionStatusEnum.enumValues)[number]),
     startDate: new Date(subscription.start_date * 1000),
     endDate: subscription.ended_at
       ? new Date(subscription.ended_at * 1000)
@@ -137,7 +142,7 @@ async function handleInvoiceEvent(
   if (!invoice.subscription)
     return NextResponse.json({ success: false }, { status: 400 });
 
-  console.log("STRIPE::WEBHOOK", status, invoice);
+  console.log("STRIPE::INVOICE", status, invoice);
 
   try {
     if (status === "succeeded") {
@@ -173,6 +178,38 @@ async function handleInvoiceEvent(
     console.error("Error handling invoice event:", e);
     return new Response("Error handling invoice event", {
       status: 500,
+    });
+  }
+}
+
+async function handleCheckoutSessionCompleted(event: Stripe.Event) {
+  const session = event.data.object as Stripe.Checkout.Session;
+  const subscriptionId = session.subscription as string;
+  const metadata = session.metadata;
+
+  console.log("STRIPE::CHECKOUT", session, metadata);
+
+  try {
+    await stripe.subscriptions.update(subscriptionId, {
+      metadata,
+    });
+
+    await db
+      .update(subscriptionTable)
+      .set({
+        status: "active",
+      })
+      .where(eq(subscriptionTable.stripeSubscriptionId, subscriptionId));
+
+    return NextResponse.json({
+      status: 200,
+      message: "Subscription metadata updated successfully",
+    });
+  } catch (e) {
+    console.error("Error updating subscription metadata:", e);
+    return NextResponse.json({
+      status: 500,
+      error: "Error updating subscription metadata",
     });
   }
 }

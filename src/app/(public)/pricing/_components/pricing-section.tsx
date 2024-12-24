@@ -90,7 +90,7 @@ export default function PricingSection() {
           <section className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-8 mt-8">
             {PLANS.map((plan, i) => (
               <PricingCard
-                key={plan.title}
+                key={`${plan.title}-${i}`}
                 index={i}
                 plan={plan}
                 user={user}
@@ -159,15 +159,15 @@ const PricingCard = ({
                 {plan.yearlyPrice && isYearly
                   ? `$${plan.yearlyPrice}`
                   : plan.monthlyPrice
-                  ? `$${plan.monthlyPrice}`
-                  : "Custom"}
+                    ? `$${plan.monthlyPrice}`
+                    : "Custom"}
               </h2>
               <span className="flex flex-col justify-end text-sm mb-1">
                 {plan.yearlyPrice && isYearly
                   ? "/year"
                   : plan.monthlyPrice
-                  ? "/month"
-                  : null}
+                    ? "/month"
+                    : null}
               </span>
             </div>
             <CardDescription className="pt-1.5 h-12">
