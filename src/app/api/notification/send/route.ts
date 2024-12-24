@@ -150,8 +150,9 @@ export async function POST(req: Request) {
 
     return new Response(
       JSON.stringify({
-        success: error === null,
         eventId: event.id,
+        success: error === null,
+        error: error?.message,
       }),
       {
         status: 200,

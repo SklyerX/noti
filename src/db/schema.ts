@@ -22,6 +22,10 @@ export const userTable = pgTable("users", {
   name: varchar("name", { length: 255 }),
   discordId: varchar("discord_id", { length: 255 }).unique(),
   emailVerified: boolean("email_verified").default(false),
+  deletedAt: timestamp("deleted_at", {
+    withTimezone: true,
+    mode: "date",
+  }),
 });
 
 export const sessionTable = pgTable("sessions", {
