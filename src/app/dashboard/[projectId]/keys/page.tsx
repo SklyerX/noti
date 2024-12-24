@@ -4,12 +4,14 @@ import { columns, type ApiData } from "./_components/table/columns";
 import { DataTable } from "./_components/table/data-table";
 
 interface Props {
-  params: {
+  params: Promise<{
     projectId: string;
-  };
+  }>;
 }
 
-export default async function Keys({ params: { projectId } }: Props) {
+export default async function Keys({ params }: Props) {
+  const { projectId } = await params;
+
   const apiKeys = await db.query.apiKeysTable.findMany({
     where: (fields, { eq }) => eq(fields.projectId, projectId),
     orderBy: (fields, { desc }) => desc(fields.createdAt),

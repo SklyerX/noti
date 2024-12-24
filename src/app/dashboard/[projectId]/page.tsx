@@ -5,12 +5,14 @@ import { and, eq, sql } from "drizzle-orm";
 import { RecentEvents } from "./recent-events";
 
 interface Props {
-  params: {
+  params: Promise<{
     projectId: string;
-  };
+  }>;
 }
 
-export default async function Page({ params: { projectId } }: Props) {
+export default async function Page({ params }: Props) {
+  const { projectId } = await params;
+
   const metrics = await getProjectMetrics(projectId);
   const recentEventsMetrics = await getRecentEventsMetrics(projectId);
 

@@ -3,12 +3,14 @@ import DeleteProject from "./_components/delete-project";
 import { db } from "@/db";
 
 interface Props {
-  params: {
+  params: Promise<{
     projectId: string;
-  };
+  }>;
 }
 
-export default async function Settings({ params: { projectId } }: Props) {
+export default async function Settings({ params }: Props) {
+  const { projectId } = await params;
+
   const project = await db.query.projectsTable.findFirst({
     where: (fields, { eq }) => eq(fields.id, projectId),
   });

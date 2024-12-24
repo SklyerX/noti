@@ -7,20 +7,21 @@ import {
 import { AppSidebar } from "@/components/dashboard-sidebar/app-sidebar";
 import { cookies } from "next/headers";
 import { getCurrentUser } from "@/lib/session";
-import { projectsTable, type User } from "@/db/schema";
-import { and } from "drizzle-orm";
+import type { User } from "@/db/schema";
 import { db } from "@/db";
 import { redirect } from "next/navigation";
 
 export default async function ProjectLayout({
   children,
-  params: { projectId },
+  params,
 }: {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     projectId: string;
-  };
+  }>;
 }) {
+  const { projectId } = await params;
+
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
 
