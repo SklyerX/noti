@@ -3,10 +3,13 @@
 import { db } from "@/db";
 import { apiKeysTable } from "@/db/schema";
 import { getCurrentUser } from "@/lib/session";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export async function deleteAPIKeyAction(id: string, projectId: string) {
+export async function bulkDeleteAPIKeysAction(
+  ids: Array<string>,
+  projectId: string
+) {
   const user = await getCurrentUser();
   if (!user) throw new Error("Not authenticated");
 
@@ -19,7 +22,9 @@ export async function deleteAPIKeyAction(id: string, projectId: string) {
 
   await db
     .delete(apiKeysTable)
-    .where(and(eq(apiKeysTable.id, id), eq(apiKeysTable.projectId, projectId)));
+    .where(
+      and(inArray(apiKeysTable.id, ids), eq(apiKeysTable.projectId, projectId))
+    );
 
   revalidatePath(`/dashboard/${projectId}/keys`);
 }

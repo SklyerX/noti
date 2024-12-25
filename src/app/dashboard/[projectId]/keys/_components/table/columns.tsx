@@ -6,8 +6,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { ApiKey } from "@/db/schema";
@@ -18,6 +16,7 @@ import { formatDistanceToNowStrict } from "date-fns";
 import { toast } from "sonner";
 import { deleteAPIKeyAction } from "../../_actions/delete-api-key";
 import { useParams } from "next/navigation";
+import { toggleActivateAction } from "../../_actions/toggle-activate";
 
 export type ApiData = Pick<
   ApiKey,
@@ -138,6 +137,15 @@ export const columns: ColumnDef<ApiData>[] = [
           error: "Failed to delete API Key",
         });
 
+      const handleActivateClick = () =>
+        toast.promise(toggleActivateAction(apiKey.id, projectId as string), {
+          success: apiKey.isLive ? "API Key deactivated" : "API Key activated",
+          loading: apiKey.isLive ? "Deactivating..." : "Activating...",
+          error: apiKey.isLive
+            ? "Failed to deactivate API Key"
+            : "Failed to activate API Key",
+        });
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -147,6 +155,9 @@ export const columns: ColumnDef<ApiData>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={handleActivateClick}>
+              {!apiKey.isLive ? "Activate" : "Deactivate"}
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
