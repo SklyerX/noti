@@ -4,6 +4,12 @@
   "description": "A TypeScript SDK for Noti SaaS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "private": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "jest",
