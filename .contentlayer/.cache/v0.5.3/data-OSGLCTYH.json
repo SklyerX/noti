@@ -1,0 +1,56 @@
+{
+  "cacheItemsMap": {
+    "docs/index.mdx": {
+      "document": {
+        "title": "Documentation",
+        "description": "Noti SaaS Documentation",
+        "toc": true,
+        "published": false,
+        "body": {
+          "raw": "\n## Wawd\n\nawdawd********",
+          "code": "var Component=(()=>{var l=Object.create;var r=Object.defineProperty;var u=Object.getOwnPropertyDescriptor;var x=Object.getOwnPropertyNames;var w=Object.getPrototypeOf,p=Object.prototype.hasOwnProperty;var _=(n,t)=>()=>(t||n((t={exports:{}}).exports,t),t.exports),f=(n,t)=>{for(var a in t)r(n,a,{get:t[a],enumerable:!0})},i=(n,t,a,c)=>{if(t&&typeof t==\"object\"||typeof t==\"function\")for(let o of x(t))!p.call(n,o)&&o!==a&&r(n,o,{get:()=>t[o],enumerable:!(c=u(t,o))||c.enumerable});return n};var j=(n,t,a)=>(a=n!=null?l(w(n)):{},i(t||!n||!n.__esModule?r(a,\"default\",{value:n,enumerable:!0}):a,n)),D=n=>i(r({},\"__esModule\",{value:!0}),n);var d=_((C,s)=>{s.exports=_jsx_runtime});var M={};f(M,{default:()=>h,frontmatter:()=>g});var e=j(d()),g={title:\"Documentation\",description:\"Noti SaaS Documentation\"};function m(n){let t={a:\"a\",h2:\"h2\",p:\"p\",...n.components};return(0,e.jsxs)(e.Fragment,{children:[(0,e.jsx)(t.h2,{id:\"wawd\",children:(0,e.jsx)(t.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#wawd\",children:\"Wawd\"})}),`\n`,(0,e.jsx)(t.p,{children:\"awdawd********\"})]})}function h(n={}){let{wrapper:t}=n.components||{};return t?(0,e.jsx)(t,{...n,children:(0,e.jsx)(m,{...n})}):m(n)}return D(M);})();\n;return Component;"
+        },
+        "_id": "docs/index.mdx",
+        "_raw": {
+          "sourceFilePath": "docs/index.mdx",
+          "sourceFileName": "index.mdx",
+          "sourceFileDir": "docs",
+          "contentType": "mdx",
+          "flattenedPath": "docs"
+        },
+        "type": "Doc",
+        "slug": "/docs",
+        "slugAsParams": ""
+      },
+      "documentHash": "1735541355145",
+      "hasWarnings": false,
+      "documentTypeName": "Doc"
+    },
+    "docs/random.mdx": {
+      "document": {
+        "title": "Hello",
+        "description": "This is a test",
+        "toc": true,
+        "published": false,
+        "body": {
+          "raw": "\n# Hello\n\nThis is a test\n\n```js\nconsole.log(\"Hello World\");\n```\n\n## Hello\n\nThis is *a* **test** or `is it`",
+          "code": "var Component=(()=>{var p=Object.create;var a=Object.defineProperty;var g=Object.getOwnPropertyDescriptor;var u=Object.getOwnPropertyNames;var m=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty;var y=(r,e)=>()=>(e||r((e={exports:{}}).exports,e),e.exports),x=(r,e)=>{for(var l in e)a(r,l,{get:e[l],enumerable:!0})},s=(r,e,l,o)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let t of u(e))!f.call(r,t)&&t!==l&&a(r,t,{get:()=>e[t],enumerable:!(o=g(e,t))||o.enumerable});return r};var E=(r,e,l)=>(l=r!=null?p(m(r)):{},s(e||!r||!r.__esModule?a(l,\"default\",{value:r,enumerable:!0}):l,r)),b=r=>s(a({},\"__esModule\",{value:!0}),r);var c=y((F,i)=>{i.exports=_jsx_runtime});var _={};x(_,{default:()=>h,frontmatter:()=>j});var n=E(c()),j={title:\"Hello\",description:\"This is a test\"};function d(r){let e={a:\"a\",code:\"code\",em:\"em\",figure:\"figure\",h1:\"h1\",h2:\"h2\",p:\"p\",pre:\"pre\",span:\"span\",strong:\"strong\",...r.components};return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(e.h1,{id:\"hello\",children:(0,n.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#hello\",children:\"Hello\"})}),`\n`,(0,n.jsx)(e.p,{children:\"This is a test\"}),`\n`,(0,n.jsx)(e.figure,{\"data-rehype-pretty-code-figure\":\"\",children:(0,n.jsx)(e.pre,{style:{backgroundColor:\"#24292e\",color:\"#e1e4e8\"},tabIndex:\"0\",\"data-language\":\"js\",\"data-theme\":\"github-dark\",children:(0,n.jsx)(e.code,{\"data-language\":\"js\",\"data-theme\":\"github-dark\",style:{display:\"grid\"},children:(0,n.jsxs)(e.span,{\"data-line\":\"\",children:[(0,n.jsx)(e.span,{style:{color:\"#E1E4E8\"},children:\"console.\"}),(0,n.jsx)(e.span,{style:{color:\"#B392F0\"},children:\"log\"}),(0,n.jsx)(e.span,{style:{color:\"#E1E4E8\"},children:\"(\"}),(0,n.jsx)(e.span,{style:{color:\"#9ECBFF\"},children:'\"Hello World\"'}),(0,n.jsx)(e.span,{style:{color:\"#E1E4E8\"},children:\");\"})]})})})}),`\n`,(0,n.jsx)(e.h2,{id:\"hello-1\",children:(0,n.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#hello-1\",children:\"Hello\"})}),`\n`,(0,n.jsxs)(e.p,{children:[\"This is \",(0,n.jsx)(e.em,{children:\"a\"}),\" \",(0,n.jsx)(e.strong,{children:\"test\"}),\" or \",(0,n.jsx)(e.code,{children:\"is it\"})]})]})}function h(r={}){let{wrapper:e}=r.components||{};return e?(0,n.jsx)(e,{...r,children:(0,n.jsx)(d,{...r})}):d(r)}return b(_);})();\n;return Component;"
+        },
+        "_id": "docs/random.mdx",
+        "_raw": {
+          "sourceFilePath": "docs/random.mdx",
+          "sourceFileName": "random.mdx",
+          "sourceFileDir": "docs",
+          "contentType": "mdx",
+          "flattenedPath": "docs/random"
+        },
+        "type": "Doc",
+        "slug": "/docs/random",
+        "slugAsParams": "random"
+      },
+      "documentHash": "1735271171983",
+      "hasWarnings": false,
+      "documentTypeName": "Doc"
+    }
+  }
+}
