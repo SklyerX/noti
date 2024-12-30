@@ -25,7 +25,7 @@ export function useAuth() {
 
       const user = await res.json();
 
-      if (user) {
+      if (user && Object.keys(user).length > 0) {
         cachedUser = { user, timestamp: Date.now() };
         store.setUser(user);
       } else {

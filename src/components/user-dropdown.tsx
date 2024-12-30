@@ -8,18 +8,19 @@ import {
 } from "./ui/dropdown-menu";
 import UserAvatar from "./user-avatar";
 import Link from "next/link";
-import { DollarSign, LogOut, Settings, User as UserIcon } from "lucide-react";
+import { User as UserIcon } from "lucide-react";
 import LogoutButton from "./logout-button";
 
 interface Props {
-  user: User;
+  user: Pick<User, "name" | "email" | "picture">;
+  pfpSize?: string;
 }
 
 export default function UserDropdown(props: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <UserAvatar user={props.user} />
+        <UserAvatar user={props.user} pfpSize={props.pfpSize} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <div className="flex items-center justify-start gap-2 p-2">
