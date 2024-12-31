@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "contentlayer2 build &&next build",
+    "build:docs": "contentlayer2 build",
     "start": "next start",
     "lint": "next lint",
     "format": "biome format --write .",

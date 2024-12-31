@@ -43,23 +43,8 @@ export const docsConfig: DocsConfig = {
           items: [],
         },
         {
-          title: "Installation",
-          href: "/docs/installation",
-          items: [],
-        },
-        {
           title: "Changelog",
           href: "/docs/changelog",
-          items: [],
-        },
-      ],
-    },
-    {
-      title: "Installation",
-      items: [
-        {
-          title: "Node.js",
-          href: "/docs/installation/node",
           items: [],
         },
       ],
