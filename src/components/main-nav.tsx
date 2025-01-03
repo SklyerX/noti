@@ -5,8 +5,10 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
+import { useAuth } from "@/hooks/use-auth";
 
 export function MainNav() {
+  const { isAuthenticated, isLoading } = useAuth();
   const pathname = usePathname();
 
   return (
@@ -35,6 +37,19 @@ export function MainNav() {
         >
           Pricing
         </Link>
+        {!isLoading && isAuthenticated && (
+          <Link
+            href="/dashboard"
+            className={cn(
+              "transition-colors hover:text-foreground/80",
+              pathname === "/pricing"
+                ? "text-foreground"
+                : "text-foreground/80",
+            )}
+          >
+            Dashboard
+          </Link>
+        )}
       </nav>
     </div>
   );
