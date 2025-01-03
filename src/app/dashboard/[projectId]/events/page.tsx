@@ -42,7 +42,7 @@ export default function EventsPage() {
       setAllEvents((prev) => {
         const existingIds = new Set(prev.map((event) => event.id));
         const uniqueNewEvents = newEvents.filter(
-          (event) => !existingIds.has(event.id)
+          (event) => !existingIds.has(event.id),
         );
         return [...prev, ...uniqueNewEvents];
       });
@@ -60,7 +60,7 @@ export default function EventsPage() {
           setCurrentPage((prev) => prev + 1);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     const currentLoader = loaderRef.current;
@@ -110,6 +110,14 @@ export default function EventsPage() {
                   )}
                   <span>{event.status === "sent" ? "Sent" : "Failed"}</span>
                 </p>
+                {event.status === "failed" && (
+                  <>
+                    <Dot className="size-4" />
+                    <p className="text-muted-foreground text-xs inline-flex items-center gap-2">
+                      {event.retryCount} Retries
+                    </p>
+                  </>
+                )}
               </div>
             </div>
             <div className="p-4">

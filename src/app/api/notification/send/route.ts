@@ -7,10 +7,11 @@ import { eq } from "drizzle-orm";
 import { DiscordNotificationClient } from "@/lib/classes/discord-notification";
 import { getRedisClient } from "@/lib/redis";
 import { PLAN_LIMITS } from "@/lib/utils";
+import { withRetry } from "@/lib/retry";
 
 async function checkAPILimits(
   apiKey: string,
-  userPlan: "free" | "basic" | "plus"
+  userPlan: "free" | "basic" | "plus",
 ) {
   const redis = getRedisClient();
 
@@ -92,7 +93,7 @@ export async function POST(req: Request) {
 
     const limitResult = await checkAPILimits(
       storedApiKey.id,
-      userPlan?.planTier || "free"
+      userPlan?.planTier || "free",
     );
 
     if (limitResult.allowed === false)
@@ -108,23 +109,31 @@ export async function POST(req: Request) {
         }),
         {
           status: 429,
-        }
+        },
       );
 
     const discordClient = new DiscordNotificationClient(
-      storedApiKey.project.user.discordId as string
+      storedApiKey.project.user.discordId as string,
     );
 
-    const { error } = await discordClient.send({
-      fields,
-      title,
-      description: message,
-      timestamp: new Date().toISOString(),
-      color: Number.parseInt(color),
-      footer: {
-        text: `Project - ${storedApiKey.project.name}`,
+    const sendResult = await withRetry(
+      () =>
+        discordClient.send({
+          fields,
+          title,
+          description: message,
+          timestamp: new Date().toISOString(),
+          color: Number.parseInt(color),
+          footer: {
+            text: `Project - ${storedApiKey.project.name}`,
+          },
+        }),
+      {
+        maxAttempts: 3,
+        delayMs: 1000,
+        backoffFactor: 2,
       },
-    });
+    );
 
     const [event] = await db
       .insert(eventTable)
@@ -135,8 +144,9 @@ export async function POST(req: Request) {
         message,
         fields,
         metadata,
-        status: error ? "failed" : "sent",
-        errorMessage: error?.message,
+        status: sendResult.success ? "sent" : "failed",
+        errorMessage: sendResult.error?.message,
+        retryCount: sendResult.attempts,
       })
       .returning();
 
@@ -151,15 +161,16 @@ export async function POST(req: Request) {
     return new Response(
       JSON.stringify({
         eventId: event.id,
-        success: error === null,
-        error: error?.message,
+        success: sendResult.success,
+        retryCount: sendResult.attempts,
+        error: sendResult.error?.message,
       }),
       {
         status: 200,
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
   } catch (e) {
     console.log(e);

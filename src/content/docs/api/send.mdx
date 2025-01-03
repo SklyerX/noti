@@ -47,3 +47,24 @@ curl --location 'https://noti.skylerx.ir/api/notification/send' \
     }
 }'
 ```
+
+### Response Example
+
+```json
+{
+    "eventId": "event-id-123",
+    "success": true,
+    "retryCount": 0,
+    "error": null
+}
+```
+
+
+```json
+{
+    "eventId": "event-id-123",
+    "success": false,
+    "retryCount": 3,
+    "error": "Message is too long"
+}
+```

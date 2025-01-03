@@ -31,6 +31,8 @@ export class DiscordNotificationClient {
         });
       })
       .then(() => ({ error: null }))
-      .catch((error) => ({ error }));
+      .catch((error) => {
+        throw new Error(error);
+      });
   }
 }
