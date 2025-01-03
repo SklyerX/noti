@@ -70,7 +70,7 @@ export default function Page() {
         </div>
       </div>
       <ImageZoom />
-      <div className="px-4 xl:px-6 2xl:px-4 mx-auto max-w-[1236px] grid grid-cols1 md:grid-cols-12 gap-4">
+      <div className="px-4 xl:px-6 2xl:px-4 mx-auto max-w-[1236px] grid grid-cols1 md:grid-cols-12 gap-4 mt-5 lg:mt-0">
         <DottedPlusBox wrapperClassName="md:col-span-3" className="p-5">
           <DocsCard />
         </DottedPlusBox>

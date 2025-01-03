@@ -16,7 +16,7 @@ export default function ImageZoom() {
   const scale4 = useTransform(scrollYProgress, [0.1, 1], [1, 3]);
 
   return (
-    <div ref={container} className="h-[300vh] relative">
+    <div ref={container} className="h-[300vh] relative lg:block hidden">
       <div className="sticky top-0 h-screen">
         <div className="w-full h-full absolute top-0 flex items-center justify-center">
           <motion.div
