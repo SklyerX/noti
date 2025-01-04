@@ -12,20 +12,20 @@ import { env } from "./env";
 
 const SESSION_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
 const BASE_URL =
-  process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_URL
+    ? process.env.NEXT_PUBLIC_URL
     : "http://localhost:3000";
 
 export const google = new Google(
   env.GOOGLE_CLIENT_ID,
   env.GOOGLE_CLIENT_SECRET,
-  `${BASE_URL}/login/google/callback`
+  `${BASE_URL}/login/google/callback`,
 );
 
 export const github = new GitHub(
   env.GITHUB_CLIENT_ID,
   env.GITHUB_CLIENT_SECRET,
-  null
+  null,
 );
 
 export async function validateRequest(): Promise<SessionValidationResult> {
@@ -43,7 +43,7 @@ export function generateSessionToken(): string {
 
 export async function createSession(
   token: string,
-  userId: number
+  userId: number,
 ): Promise<Session> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const session: Session = {
@@ -57,7 +57,7 @@ export async function createSession(
 }
 
 export async function validateSessionToken(
-  token: string
+  token: string,
 ): Promise<SessionValidationResult> {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
   const result = await db
