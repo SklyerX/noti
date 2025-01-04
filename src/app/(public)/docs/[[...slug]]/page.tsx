@@ -11,13 +11,14 @@ import "@/app/mdx.css";
 import { ChevronRight } from "lucide-react";
 
 interface DocPageProps {
-  params: {
-    slug: string[];
-  };
+  params: Promise<{
+    slugParam: string[];
+  }>;
 }
 
 async function getDocFromParams({ params }: DocPageProps) {
-  const slug = params.slug?.join("/") || "";
+  const { slugParam } = await params;
+  const slug = slugParam?.join("/") || "";
   const doc = allDocs.find((doc) => doc.slugAsParams === slug);
 
   if (!doc) {
