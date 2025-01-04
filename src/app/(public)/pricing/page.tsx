@@ -2,7 +2,6 @@ import { Ubuntu_Mono } from "next/font/google";
 import HyperText from "@/components/ui/hyper-text";
 import { FadeText } from "@/components/ui/fade-text";
 
-import { getCurrentUser } from "@/lib/session";
 import PricingSection from "./_components/pricing-section";
 
 const ubuntu_mono = Ubuntu_Mono({
@@ -13,11 +12,9 @@ const ubuntu_mono = Ubuntu_Mono({
 });
 
 export default async function Pricing() {
-  const user = await getCurrentUser();
-
   return (
     <div
-      className={`container max-w-6xl mx-auto mt-5 ${ubuntu_mono.className}`}
+      className={`container max-w-6xl mx-auto mt-5 p-5 ${ubuntu_mono.className}`}
     >
       <HyperText
         className="text-4xl font-bold text-black dark:text-white"
