@@ -1,0 +1,46 @@
+---
+title: Retrieve
+description: Retrieve of the Noti SaaS API
+---
+
+## Retrieve an Event
+
+To retrieve an event, you need to provide the event ID. By providing the event ID, all data you passed to the api will be returned.
+
+Base URL: `https://noti.skylerx.ir/api/notification/retrieve/{eventId}`
+
+Method: `GET`
+
+Headers:
+- `x-api-key`: Your API key
+
+### Request Example
+
+```bash
+curl -X GET https://noti.skylerx.ir/api/notification/retrieve/event-123 \
+  -H "x-api-key: <apiKey>"
+```
+
+### Response Example
+
+```json
+{
+    "title": "Hello!",
+    "message": null,
+    "fields": [
+        {
+            "name": "Name",
+            "value": "hello"
+        }
+    ],
+    "metadata": {
+        "userId": "123123"
+    },
+    "errorMessage": null,
+    "retryCount": 0,
+    "status": "sent",
+    "createdAt": "2024-12-31T20:50:04.246Z"
+}
+```
+
+The metadata object can include any additional information you want to store with the event. This can be useful for tracking purposes or storing any other relevant data.

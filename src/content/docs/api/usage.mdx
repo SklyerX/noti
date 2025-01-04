@@ -1,0 +1,47 @@
+---
+title: Usage
+description: Usage of the Noti SaaS API
+---
+
+# Usage
+
+Base URL: `https://noti.skylerx.ir/api/notification/usage`
+
+Method: `GET`
+
+Headers:
+- `x-api-key`: Your API key
+
+### Request
+
+```bash
+curl --location 'https://noti.skylerx.ir/api/notification/usage' \
+--header 'x-api-key: <api-key>'
+```
+
+### Response
+
+```json
+{
+    "success": true,
+    "data": {
+        "current": {
+            "usage": 1,
+            "remaining": 99,
+            "limit": 100
+        },
+        "history": [
+            {
+                "month": "2024-12",
+                "usage": 1
+            }
+        ],
+        "apiKey": {
+            "name": "api_key_name",
+            "totalUsage": 1,
+            "lastUsedAt": "2024-12-31T20:50:04.238Z"
+        },
+        "nextReset": "2025-01-31T05:00:00.000Z"
+    }
+}
+```

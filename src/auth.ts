@@ -7,16 +7,25 @@ import {
 } from "@oslojs/encoding";
 import { eq } from "drizzle-orm";
 import { getSessionToken } from "./lib/session";
-import { Google } from "arctic";
+import { GitHub, Google } from "arctic";
 import { env } from "./env";
 
 const SESSION_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+const BASE_URL =
+  process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : "http://localhost:3000";
 
 export const google = new Google(
   env.GOOGLE_CLIENT_ID,
   env.GOOGLE_CLIENT_SECRET,
   `${BASE_URL}/login/google/callback`
+);
+
+export const github = new GitHub(
+  env.GITHUB_CLIENT_ID,
+  env.GITHUB_CLIENT_SECRET,
+  null
 );
 
 export async function validateRequest(): Promise<SessionValidationResult> {

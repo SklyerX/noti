@@ -1,0 +1,141 @@
+---
+title: Node.js
+description: Noti SaaS SDK for Node.js
+---
+
+# Noti SDK
+
+A TypeScript SDK for sending and managing notifications through the [Noti API](https://noti.skylerx.ir/dashboard).
+
+## Installation
+
+```bash
+npm install @skylerx/noti-saas-sdk
+# or
+yarn add @skylerx/noti-saas-sdk
+# or
+pnpm add @skylerx/noti-saas-sdk
+```
+
+## Quick Start
+
+```typescript
+import { Client } from '@skylerx/noti-saas-sdk';
+
+// Initialize the client
+const client = new Client({
+  apiKey: 'your-api-key'
+});
+
+// Send a simple notification
+await client.send({
+  title: 'Hello World',
+  color: '0x00ff00',
+  fields: [
+    { name: 'Status', value: 'Active' }
+  ],
+  metadata: {
+    type: 'welcome'
+  }
+});
+```
+
+## Features
+
+- 🚀 Simple, fluent API
+- 💪 Full TypeScript support
+- 🎨 Template support with variable interpolation
+- ✨ Metadata and custom fields
+- 🔍 Event retrieval
+- 🛡️ Built-in error handling
+
+## Usage
+
+### Creating and Using Templates
+
+Templates allow you to create reusable notification formats with variable interpolation:
+
+```typescript
+// Create a template
+const userSignupTemplate = client.template({
+  title: 'New User: {{username}}',
+  color: '0x00ff00',
+  fields: [
+    { name: 'Email', value: '{{email}}' },
+    { name: 'Plan', value: '{{plan}}' }
+  ],
+  metadata: {
+    type: 'user_signup',
+    source: '{{source}}'
+  }
+});
+
+// Use the template
+await userSignupTemplate({
+  username: 'johndoe',
+  email: 'john@example.com',
+  plan: 'Pro',
+  source: 'web'
+});
+```
+
+### Retrieving Events
+
+You can retrieve notification events using their ID:
+
+```typescript
+const event = await client.retrieve('event-123');
+console.log(event.status); // 'success'
+```
+
+### Error Handling
+
+The SDK includes built-in error handling with the `SDKError` class:
+
+```typescript
+try {
+  await client.send({
+    title: 'Test Notification',
+    color: '0x00ff00'
+  });
+} catch (error) {
+  if (error instanceof SDKError) {
+    console.error('API Error:', error.message);
+    console.error('Error Code:', error.code);
+  }
+}
+```
+
+## API Reference
+
+#### Methods
+
+##### send
+
+```typescript
+send(options: SendOptions): Promise<SendResult>
+```
+
+Options:
+- `title` `(string)`: Notification title
+- `color` `(string)`: Hex color code (e.g., '0x00ff00')
+- `fields` `(Array<Field>, optional)`: Array of name-value pairs
+- `metadata` `(Record<string, unknown>, optional)`: Additional metadata
+
+Returns: Promise resolving to send result with eventId
+
+##### template
+
+```typescript
+template(content: SendOptions): TemplateSender
+```
+
+Creates a reusable template function with variable interpolation.
+
+##### retrieve
+
+```typescript
+retrieve(eventId: string): Promise<RetrieveEventData>
+```
+
+Retrieves event data for a given notification ID.

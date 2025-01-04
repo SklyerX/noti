@@ -8,6 +8,9 @@ import { ObjectParser } from "@pilcrowjs/object-parser";
 import type { OAuth2Tokens } from "arctic";
 import { db } from "@/db";
 import { userTable } from "@/db/schema";
+import { createOAuthErrorResponse, OAuthErrorCode } from "@/lib/error";
+
+const REDIRECT_PATH = "/dashboard";
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
@@ -47,14 +50,18 @@ export async function GET(request: Request): Promise<Response> {
   const claims = decodeIdToken(tokens.idToken());
   const claimsParser = new ObjectParser(claims);
 
-  console.log(claims);
-
-  console.log(claimsParser.getString("sub"));
-
   const googleId = claimsParser.getString("sub");
   const name = claimsParser.getString("name");
   const picture = claimsParser.getString("picture");
   const email = claimsParser.getString("email");
+
+  const existingEmail = await db.query.userTable.findFirst({
+    where: (fields, { eq }) => eq(fields.email, email),
+  });
+
+  if (existingEmail) {
+    return createOAuthErrorResponse(OAuthErrorCode.EMAIL_EXISTS);
+  }
 
   const existingUser = await db.query.userTable.findFirst({
     where: (fields, { eq }) => eq(fields.googleId, googleId),
@@ -63,12 +70,13 @@ export async function GET(request: Request): Promise<Response> {
   if (existingUser) {
     const sessionToken = generateSessionToken();
     const session = await createSession(sessionToken, existingUser.id);
+
     await setSessionTokenCookie(sessionToken, session.expiresAt);
 
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/",
+        Location: REDIRECT_PATH,
       },
     });
   }
@@ -77,6 +85,7 @@ export async function GET(request: Request): Promise<Response> {
     .insert(userTable)
     .values({
       googleId: googleId,
+      emailVerified: true,
       email,
       picture,
       name,
@@ -91,7 +100,7 @@ export async function GET(request: Request): Promise<Response> {
   return new Response(null, {
     status: 302,
     headers: {
-      Location: "/",
+      Location: REDIRECT_PATH,
     },
   });
 }

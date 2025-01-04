@@ -1,0 +1,70 @@
+---
+title: Send
+description: Send of the Noti SaaS API
+---
+
+## Send a Notification
+
+To send a notification, you need to provide the following information:
+
+- Title
+- Message (optional)
+- Color (optional)
+- Fields (optional)
+- Metadata (optional)
+
+These values have to be provided as the `application/json` body of the request. These fields are in compliance with the Discord API meaning anything you can do with the official API you can do with Noti SaaS.
+
+Base URL: `https://noti.skylerx.ir/api/notification/send`
+
+Method: `POST`
+
+Headers:
+- `x-api-key`: Your API key
+
+<Callout>
+  **Note:** The colour field is a hexadecimal color code in the format of `0xFFFFFF` (for example). You will need to provide it as this format but wrapped in a string. I know, inconvenient but thats how the discord api accepts embed colours.
+</Callout>
+
+### Request Example
+
+```bash
+curl --location 'https://noti.skylerx.ir/api/notification/send' \
+--header 'x-api-key: <apiKey>' \
+--header 'Content-Type: application/json' \
+--data '{
+    "hello": false,
+    "title": "Hello!",
+    "color": "0xFF0000",
+    "fields": [
+        {
+            "name": "Name",
+            "value": "hello"
+        }
+    ],
+    "metadata": {
+        "userId": "123123"
+    }
+}'
+```
+
+### Response Example
+
+```json
+{
+    "eventId": "event-id-123",
+    "success": true,
+    "retryCount": 0,
+    "error": null
+}
+```
+
+
+```json
+{
+    "eventId": "event-id-123",
+    "success": false,
+    "retryCount": 3,
+    "error": "Message is too long"
+}
+```

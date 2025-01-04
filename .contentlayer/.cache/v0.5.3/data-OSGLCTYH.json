@@ -1,0 +1,160 @@
+{
+  "cacheItemsMap": {
+    "docs/changelog.mdx": {
+      "document": {
+        "title": "Changelog",
+        "description": "Latest updates and announcements.",
+        "toc": true,
+        "published": false,
+        "body": {
+          "raw": "\n## Tue Dec 31, 2024 - Official Release\n\nThe first official release of Noti SaaS is here! 🎉\n\nThis release includes the following features:\n\n- Sleek UI Design\n- API Key management\n- User management\n- Stripe integration for payments\n- Lucia auth (the self-rolled version as the official lucia auth has been deprecated)\n- Email verification and password reset\n- Basic analytics\n- Direct messaging for Discord!\n\nFeature updates may include:\n- Slack integration\n- Email notifications\n- More payment options\n- More logging and analytics features (this version's main focus was on notifications)\n\nWe hope you enjoy using Noti SaaS and we look forward to your feedback and suggestions. Thank you for choosing Noti SaaS!\n\n*Yeah I know horrible name, but I'm a developer naming is the hard part*\n*Happy coding! and Happy New Year!*",
+          "code": "var Component=(()=>{var u=Object.create;var l=Object.defineProperty;var f=Object.getOwnPropertyDescriptor;var m=Object.getOwnPropertyNames;var p=Object.getPrototypeOf,g=Object.prototype.hasOwnProperty;var y=(i,e)=>()=>(e||i((e={exports:{}}).exports,e),e.exports),x=(i,e)=>{for(var a in e)l(i,a,{get:e[a],enumerable:!0})},o=(i,e,a,t)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let r of m(e))!g.call(i,r)&&r!==a&&l(i,r,{get:()=>e[r],enumerable:!(t=f(e,r))||t.enumerable});return i};var S=(i,e,a)=>(a=i!=null?u(p(i)):{},o(e||!i||!i.__esModule?l(a,\"default\",{value:i,enumerable:!0}):a,i)),w=i=>o(l({},\"__esModule\",{value:!0}),i);var s=y((j,c)=>{c.exports=_jsx_runtime});var _={};x(_,{default:()=>h,frontmatter:()=>k});var n=S(s()),k={title:\"Changelog\",description:\"Latest updates and announcements.\"};function d(i){let e={a:\"a\",em:\"em\",h2:\"h2\",li:\"li\",p:\"p\",ul:\"ul\",...i.components};return(0,n.jsxs)(n.Fragment,{children:[(0,n.jsx)(e.h2,{id:\"tue-dec-31-2024---official-release\",children:(0,n.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#tue-dec-31-2024---official-release\",children:\"Tue Dec 31, 2024 - Official Release\"})}),`\n`,(0,n.jsx)(e.p,{children:\"The first official release of Noti SaaS is here! \\u{1F389}\"}),`\n`,(0,n.jsx)(e.p,{children:\"This release includes the following features:\"}),`\n`,(0,n.jsxs)(e.ul,{children:[`\n`,(0,n.jsx)(e.li,{children:\"Sleek UI Design\"}),`\n`,(0,n.jsx)(e.li,{children:\"API Key management\"}),`\n`,(0,n.jsx)(e.li,{children:\"User management\"}),`\n`,(0,n.jsx)(e.li,{children:\"Stripe integration for payments\"}),`\n`,(0,n.jsx)(e.li,{children:\"Lucia auth (the self-rolled version as the official lucia auth has been deprecated)\"}),`\n`,(0,n.jsx)(e.li,{children:\"Email verification and password reset\"}),`\n`,(0,n.jsx)(e.li,{children:\"Basic analytics\"}),`\n`,(0,n.jsx)(e.li,{children:\"Direct messaging for Discord!\"}),`\n`]}),`\n`,(0,n.jsx)(e.p,{children:\"Feature updates may include:\"}),`\n`,(0,n.jsxs)(e.ul,{children:[`\n`,(0,n.jsx)(e.li,{children:\"Slack integration\"}),`\n`,(0,n.jsx)(e.li,{children:\"Email notifications\"}),`\n`,(0,n.jsx)(e.li,{children:\"More payment options\"}),`\n`,(0,n.jsx)(e.li,{children:\"More logging and analytics features (this version's main focus was on notifications)\"}),`\n`]}),`\n`,(0,n.jsx)(e.p,{children:\"We hope you enjoy using Noti SaaS and we look forward to your feedback and suggestions. Thank you for choosing Noti SaaS!\"}),`\n`,(0,n.jsxs)(e.p,{children:[(0,n.jsx)(e.em,{children:\"Yeah I know horrible name, but I'm a developer naming is the hard part\"}),`\n`,(0,n.jsx)(e.em,{children:\"Happy coding! and Happy New Year!\"})]})]})}function h(i={}){let{wrapper:e}=i.components||{};return e?(0,n.jsx)(e,{...i,children:(0,n.jsx)(d,{...i})}):d(i)}return w(_);})();\n;return Component;"
+        },
+        "_id": "docs/changelog.mdx",
+        "_raw": {
+          "sourceFilePath": "docs/changelog.mdx",
+          "sourceFileName": "changelog.mdx",
+          "sourceFileDir": "docs",
+          "contentType": "mdx",
+          "flattenedPath": "docs/changelog"
+        },
+        "type": "Doc",
+        "slug": "/docs/changelog",
+        "slugAsParams": "changelog"
+      },
+      "documentHash": "1735673792768",
+      "hasWarnings": false,
+      "documentTypeName": "Doc"
+    },
+    "docs/index.mdx": {
+      "document": {
+        "title": "Introduction",
+        "description": "Simple and powerful notifications for your self made saas straight to your discord-inbox.",
+        "toc": true,
+        "published": false,
+        "body": {
+          "raw": "\n## What is Noti SaaS?\n\nNoti SaaS is a self-made service that pipes notifications straight to your Discord inbox through a simple API wrapper. It turns Discord's complex notification system into something you can integrate with a few lines of code.\n\nNo fancy stuff - it's not trying to replace Discord's official notifications, A/B testing, webhooks, or logging. It just gets your important events to Discord in real-time, exactly when you need them.\n\n## Why did I make this?\n\nI was always searching for a way to get into something notification related. Even tho this project is merely a showcase of my skills I like working with notifications and external APIs which gave me an excuse. I realized that I haven't been honest about my true skills on Github for a while. Due to my heavy workload in my last year of high school I was rarely able to code and document things properly. I mostly learned coding and built small projects for fun, learning purposes, or just random tools that I needed at the time.\n\n## What's in the box 📦\n\nTell me she's alright!! No okay but all jokes aside by box I meant the app.\n\nEven though I love this tech stack I'm starting to believe that every site is looking the same with the same technology and UI design and everything. Nevertheless, that doesn't mean these technologies aren't valuable and based on my research a lot of people are now **expecting** good developers to be familiar with them.\n\nI try to use a variety of tools and libraries in my own projects, the most random things because it's fun and I like learning. If the only tool in your toolbox is a hammer, everything is gonna look like a hammer project to you.\n\nAnyways sorry for the yapping. Here are the technologies I used in this project:\n- <a href=\"https://nextjs.org\" className=\"underline\">Next.js</a> (yeah no shit)\n- <a href=\"https://tailwindcss.com\" className=\"underline\">TailwindCSS</a>\n- The infamous <a href=\"https://ui.shadcn.com\" className=\"underline\">Shadcn/ui</a>\n- The greatest ORM ever made <a href=\"https://orm.drizzle.team\" className=\"underline\">DrizzleORM</a>\n- <a href=\"https://www.postgresql.org\" className=\"underline\">PostgreSQL</a>\n- <a href=\"https://stripe.com\" className=\"underline\">Stripe</a>\n- <a href=\"https://contentlayer.dev\" className=\"underline\">Contentlayer</a> and <a href=\"https://mdxjs.com\" className=\"underline\">MDX</a>\n- And a bunch of other stuff that work together to make this project possible",
+          "code": "var Component=(()=>{var m=Object.create;var o=Object.defineProperty;var u=Object.getOwnPropertyDescriptor;var p=Object.getOwnPropertyNames;var g=Object.getPrototypeOf,f=Object.prototype.hasOwnProperty;var y=(n,e)=>()=>(e||n((e={exports:{}}).exports,e),e.exports),w=(n,e)=>{for(var i in e)o(n,i,{get:e[i],enumerable:!0})},r=(n,e,i,s)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let a of p(e))!f.call(n,a)&&a!==i&&o(n,a,{get:()=>e[a],enumerable:!(s=u(e,a))||s.enumerable});return n};var b=(n,e,i)=>(i=n!=null?m(g(n)):{},r(e||!n||!n.__esModule?o(i,\"default\",{value:n,enumerable:!0}):i,n)),x=n=>r(o({},\"__esModule\",{value:!0}),n);var l=y((j,h)=>{h.exports=_jsx_runtime});var I={};w(I,{default:()=>d,frontmatter:()=>k});var t=b(l()),k={title:\"Introduction\",description:\"Simple and powerful notifications for your self made saas straight to your discord-inbox.\"};function c(n){let e={a:\"a\",h2:\"h2\",li:\"li\",p:\"p\",strong:\"strong\",ul:\"ul\",...n.components};return(0,t.jsxs)(t.Fragment,{children:[(0,t.jsx)(e.h2,{id:\"what-is-noti-saas\",children:(0,t.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#what-is-noti-saas\",children:\"What is Noti SaaS?\"})}),`\n`,(0,t.jsx)(e.p,{children:\"Noti SaaS is a self-made service that pipes notifications straight to your Discord inbox through a simple API wrapper. It turns Discord's complex notification system into something you can integrate with a few lines of code.\"}),`\n`,(0,t.jsx)(e.p,{children:\"No fancy stuff - it's not trying to replace Discord's official notifications, A/B testing, webhooks, or logging. It just gets your important events to Discord in real-time, exactly when you need them.\"}),`\n`,(0,t.jsx)(e.h2,{id:\"why-did-i-make-this\",children:(0,t.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#why-did-i-make-this\",children:\"Why did I make this?\"})}),`\n`,(0,t.jsx)(e.p,{children:\"I was always searching for a way to get into something notification related. Even tho this project is merely a showcase of my skills I like working with notifications and external APIs which gave me an excuse. I realized that I haven't been honest about my true skills on Github for a while. Due to my heavy workload in my last year of high school I was rarely able to code and document things properly. I mostly learned coding and built small projects for fun, learning purposes, or just random tools that I needed at the time.\"}),`\n`,(0,t.jsx)(e.h2,{id:\"whats-in-the-box-\",children:(0,t.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#whats-in-the-box-\",children:\"What's in the box \\u{1F4E6}\"})}),`\n`,(0,t.jsx)(e.p,{children:\"Tell me she's alright!! No okay but all jokes aside by box I meant the app.\"}),`\n`,(0,t.jsxs)(e.p,{children:[\"Even though I love this tech stack I'm starting to believe that every site is looking the same with the same technology and UI design and everything. Nevertheless, that doesn't mean these technologies aren't valuable and based on my research a lot of people are now \",(0,t.jsx)(e.strong,{children:\"expecting\"}),\" good developers to be familiar with them.\"]}),`\n`,(0,t.jsx)(e.p,{children:\"I try to use a variety of tools and libraries in my own projects, the most random things because it's fun and I like learning. If the only tool in your toolbox is a hammer, everything is gonna look like a hammer project to you.\"}),`\n`,(0,t.jsx)(e.p,{children:\"Anyways sorry for the yapping. Here are the technologies I used in this project:\"}),`\n`,(0,t.jsxs)(e.ul,{children:[`\n`,(0,t.jsxs)(e.li,{children:[(0,t.jsx)(\"a\",{href:\"https://nextjs.org\",className:\"underline\",children:\"Next.js\"}),\" (yeah no shit)\"]}),`\n`,(0,t.jsxs)(e.li,{children:[`\n`,(0,t.jsx)(\"a\",{href:\"https://tailwindcss.com\",className:\"underline\",children:\"TailwindCSS\"}),`\n`]}),`\n`,(0,t.jsxs)(e.li,{children:[\"The infamous \",(0,t.jsx)(\"a\",{href:\"https://ui.shadcn.com\",className:\"underline\",children:\"Shadcn/ui\"})]}),`\n`,(0,t.jsxs)(e.li,{children:[\"The greatest ORM ever made \",(0,t.jsx)(\"a\",{href:\"https://orm.drizzle.team\",className:\"underline\",children:\"DrizzleORM\"})]}),`\n`,(0,t.jsxs)(e.li,{children:[`\n`,(0,t.jsx)(\"a\",{href:\"https://www.postgresql.org\",className:\"underline\",children:\"PostgreSQL\"}),`\n`]}),`\n`,(0,t.jsxs)(e.li,{children:[`\n`,(0,t.jsx)(\"a\",{href:\"https://stripe.com\",className:\"underline\",children:\"Stripe\"}),`\n`]}),`\n`,(0,t.jsxs)(e.li,{children:[(0,t.jsx)(\"a\",{href:\"https://contentlayer.dev\",className:\"underline\",children:\"Contentlayer\"}),\" and \",(0,t.jsx)(\"a\",{href:\"https://mdxjs.com\",className:\"underline\",children:\"MDX\"})]}),`\n`,(0,t.jsx)(e.li,{children:\"And a bunch of other stuff that work together to make this project possible\"}),`\n`]})]})}function d(n={}){let{wrapper:e}=n.components||{};return e?(0,t.jsx)(e,{...n,children:(0,t.jsx)(c,{...n})}):c(n)}return x(I);})();\n;return Component;"
+        },
+        "_id": "docs/index.mdx",
+        "_raw": {
+          "sourceFilePath": "docs/index.mdx",
+          "sourceFileName": "index.mdx",
+          "sourceFileDir": "docs",
+          "contentType": "mdx",
+          "flattenedPath": "docs"
+        },
+        "type": "Doc",
+        "slug": "/docs",
+        "slugAsParams": ""
+      },
+      "documentHash": "1735675328264",
+      "hasWarnings": false,
+      "documentTypeName": "Doc"
+    },
+    "docs/api/retrieve.mdx": {
+      "document": {
+        "title": "Retrieve",
+        "description": "Retrieve of the Noti SaaS API",
+        "toc": true,
+        "published": false,
+        "body": {
+          "raw": "\n## Retrieve",
+          "code": "var Component=(()=>{var m=Object.create;var i=Object.defineProperty;var u=Object.getOwnPropertyDescriptor;var f=Object.getOwnPropertyNames;var x=Object.getPrototypeOf,v=Object.prototype.hasOwnProperty;var _=(e,t)=>()=>(t||e((t={exports:{}}).exports,t),t.exports),p=(e,t)=>{for(var n in t)i(e,n,{get:t[n],enumerable:!0})},c=(e,t,n,a)=>{if(t&&typeof t==\"object\"||typeof t==\"function\")for(let r of f(t))!v.call(e,r)&&r!==n&&i(e,r,{get:()=>t[r],enumerable:!(a=u(t,r))||a.enumerable});return e};var j=(e,t,n)=>(n=e!=null?m(x(e)):{},c(t||!e||!e.__esModule?i(n,\"default\",{value:e,enumerable:!0}):n,e)),M=e=>c(i({},\"__esModule\",{value:!0}),e);var h=_((D,s)=>{s.exports=_jsx_runtime});var b={};p(b,{default:()=>l,frontmatter:()=>R});var o=j(h()),R={title:\"Retrieve\",description:\"Retrieve of the Noti SaaS API\"};function d(e){let t={a:\"a\",h2:\"h2\",...e.components};return(0,o.jsx)(t.h2,{id:\"retrieve\",children:(0,o.jsx)(t.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#retrieve\",children:\"Retrieve\"})})}function l(e={}){let{wrapper:t}=e.components||{};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(d,{...e})}):d(e)}return M(b);})();\n;return Component;"
+        },
+        "_id": "docs/api/retrieve.mdx",
+        "_raw": {
+          "sourceFilePath": "docs/api/retrieve.mdx",
+          "sourceFileName": "retrieve.mdx",
+          "sourceFileDir": "docs/api",
+          "contentType": "mdx",
+          "flattenedPath": "docs/api/retrieve"
+        },
+        "type": "Doc",
+        "slug": "/docs/api/retrieve",
+        "slugAsParams": "api-retrieve"
+      },
+      "documentHash": "1735675961206",
+      "hasWarnings": false,
+      "documentTypeName": "Doc"
+    },
+    "docs/api/send.mdx": {
+      "document": {
+        "title": "Send",
+        "description": "Send of the Noti SaaS API",
+        "toc": true,
+        "published": false,
+        "body": {
+          "raw": "\n## Send",
+          "code": "var Component=(()=>{var m=Object.create;var a=Object.defineProperty;var u=Object.getOwnPropertyDescriptor;var f=Object.getOwnPropertyNames;var x=Object.getPrototypeOf,S=Object.prototype.hasOwnProperty;var _=(n,e)=>()=>(e||n((e={exports:{}}).exports,e),e.exports),p=(n,e)=>{for(var t in e)a(n,t,{get:e[t],enumerable:!0})},i=(n,e,t,c)=>{if(e&&typeof e==\"object\"||typeof e==\"function\")for(let o of f(e))!S.call(n,o)&&o!==t&&a(n,o,{get:()=>e[o],enumerable:!(c=u(e,o))||c.enumerable});return n};var j=(n,e,t)=>(t=n!=null?m(x(n)):{},i(e||!n||!n.__esModule?a(t,\"default\",{value:n,enumerable:!0}):t,n)),M=n=>i(a({},\"__esModule\",{value:!0}),n);var d=_((L,s)=>{s.exports=_jsx_runtime});var C={};p(C,{default:()=>l,frontmatter:()=>b});var r=j(d()),b={title:\"Send\",description:\"Send of the Noti SaaS API\"};function h(n){let e={a:\"a\",h2:\"h2\",...n.components};return(0,r.jsx)(e.h2,{id:\"send\",children:(0,r.jsx)(e.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#send\",children:\"Send\"})})}function l(n={}){let{wrapper:e}=n.components||{};return e?(0,r.jsx)(e,{...n,children:(0,r.jsx)(h,{...n})}):h(n)}return M(C);})();\n;return Component;"
+        },
+        "_id": "docs/api/send.mdx",
+        "_raw": {
+          "sourceFilePath": "docs/api/send.mdx",
+          "sourceFileName": "send.mdx",
+          "sourceFileDir": "docs/api",
+          "contentType": "mdx",
+          "flattenedPath": "docs/api/send"
+        },
+        "type": "Doc",
+        "slug": "/docs/api/send",
+        "slugAsParams": "api-send"
+      },
+      "documentHash": "1735675963861",
+      "hasWarnings": false,
+      "documentTypeName": "Doc"
+    },
+    "docs/api/usage.mdx": {
+      "document": {
+        "title": "Usage",
+        "description": "Usage of the Noti SaaS API",
+        "toc": true,
+        "published": false,
+        "body": {
+          "raw": "\n## Usage",
+          "code": "var Component=(()=>{var l=Object.create;var r=Object.defineProperty;var m=Object.getOwnPropertyDescriptor;var f=Object.getOwnPropertyNames;var x=Object.getPrototypeOf,g=Object.prototype.hasOwnProperty;var _=(e,t)=>()=>(t||e((t={exports:{}}).exports,t),t.exports),p=(e,t)=>{for(var n in t)r(e,n,{get:t[n],enumerable:!0})},c=(e,t,n,s)=>{if(t&&typeof t==\"object\"||typeof t==\"function\")for(let a of f(t))!g.call(e,a)&&a!==n&&r(e,a,{get:()=>t[a],enumerable:!(s=m(t,a))||s.enumerable});return e};var j=(e,t,n)=>(n=e!=null?l(x(e)):{},c(t||!e||!e.__esModule?r(n,\"default\",{value:e,enumerable:!0}):n,e)),M=e=>c(r({},\"__esModule\",{value:!0}),e);var h=_((D,i)=>{i.exports=_jsx_runtime});var b={};p(b,{default:()=>d,frontmatter:()=>U});var o=j(h()),U={title:\"Usage\",description:\"Usage of the Noti SaaS API\"};function u(e){let t={a:\"a\",h2:\"h2\",...e.components};return(0,o.jsx)(t.h2,{id:\"usage\",children:(0,o.jsx)(t.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#usage\",children:\"Usage\"})})}function d(e={}){let{wrapper:t}=e.components||{};return t?(0,o.jsx)(t,{...e,children:(0,o.jsx)(u,{...e})}):u(e)}return M(b);})();\n;return Component;"
+        },
+        "_id": "docs/api/usage.mdx",
+        "_raw": {
+          "sourceFilePath": "docs/api/usage.mdx",
+          "sourceFileName": "usage.mdx",
+          "sourceFileDir": "docs/api",
+          "contentType": "mdx",
+          "flattenedPath": "docs/api/usage"
+        },
+        "type": "Doc",
+        "slug": "/docs/api/usage",
+        "slugAsParams": "api-usage"
+      },
+      "documentHash": "1735675949399",
+      "hasWarnings": false,
+      "documentTypeName": "Doc"
+    },
+    "docs/sdk/node.mdx": {
+      "document": {
+        "title": "Node.js",
+        "description": "Noti SaaS SDK for Node.js",
+        "toc": true,
+        "published": false,
+        "body": {
+          "raw": "\n## Noti SaaS SDK for Node.js",
+          "code": "var Component=(()=>{var j=Object.create;var s=Object.defineProperty;var l=Object.getOwnPropertyDescriptor;var m=Object.getOwnPropertyNames;var u=Object.getPrototypeOf,x=Object.prototype.hasOwnProperty;var N=(o,t)=>()=>(t||o((t={exports:{}}).exports,t),t.exports),S=(o,t)=>{for(var n in t)s(o,n,{get:t[n],enumerable:!0})},i=(o,t,n,r)=>{if(t&&typeof t==\"object\"||typeof t==\"function\")for(let e of m(t))!x.call(o,e)&&e!==n&&s(o,e,{get:()=>t[e],enumerable:!(r=l(t,e))||r.enumerable});return o};var _=(o,t,n)=>(n=o!=null?j(u(o)):{},i(t||!o||!o.__esModule?s(n,\"default\",{value:o,enumerable:!0}):n,o)),p=o=>i(s({},\"__esModule\",{value:!0}),o);var d=N((b,c)=>{c.exports=_jsx_runtime});var k={};S(k,{default:()=>h,frontmatter:()=>D});var a=_(d()),D={title:\"Node.js\",description:\"Noti SaaS SDK for Node.js\"};function f(o){let t={a:\"a\",h2:\"h2\",...o.components};return(0,a.jsx)(t.h2,{id:\"noti-saas-sdk-for-nodejs\",children:(0,a.jsx)(t.a,{className:\"subheading-anchor\",\"aria-label\":\"Link to section\",href:\"#noti-saas-sdk-for-nodejs\",children:\"Noti SaaS SDK for Node.js\"})})}function h(o={}){let{wrapper:t}=o.components||{};return t?(0,a.jsx)(t,{...o,children:(0,a.jsx)(f,{...o})}):f(o)}return p(k);})();\n;return Component;"
+        },
+        "_id": "docs/sdk/node.mdx",
+        "_raw": {
+          "sourceFilePath": "docs/sdk/node.mdx",
+          "sourceFileName": "node.mdx",
+          "sourceFileDir": "docs/sdk",
+          "contentType": "mdx",
+          "flattenedPath": "docs/sdk/node"
+        },
+        "type": "Doc",
+        "slug": "/docs/sdk/node",
+        "slugAsParams": "sdk-node"
+      },
+      "documentHash": "1735675828991",
+      "hasWarnings": false,
+      "documentTypeName": "Doc"
+    }
+  }
+}
