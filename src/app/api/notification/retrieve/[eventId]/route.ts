@@ -2,13 +2,14 @@ import { db } from "@/db";
 import { ApiKeyManager } from "@/lib/classes/api-key";
 
 interface Props {
-  params: {
+  params: Promise<{
     eventId: string;
-  };
+  }>;
 }
 
 export async function GET(req: Request, { params }: Props) {
   const headers = req.headers;
+  const { eventId } = await params;
 
   const apiKey = headers.get("x-api-key");
 
@@ -47,7 +48,7 @@ export async function GET(req: Request, { params }: Props) {
 
   const event = await db.query.eventTable.findFirst({
     where: (fields, { eq, and }) =>
-      and(eq(fields.id, params.eventId), eq(fields.apiKeyId, storedApiKey.id)),
+      and(eq(fields.id, eventId), eq(fields.apiKeyId, storedApiKey.id)),
     columns: {
       title: true,
       message: true,
