@@ -52,7 +52,7 @@ export function AppSidebar({ user, ...props }: Props) {
       },
       {
         title: "Documentation",
-        url: `/dashboard/${projectId}/settings`,
+        url: "/docs",
         icon: Book,
       },
     ],
