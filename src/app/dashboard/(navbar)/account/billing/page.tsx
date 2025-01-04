@@ -10,8 +10,8 @@ import Stripe from "stripe";
 const stripe = new Stripe(env.STRIPE_SECRET_KEY);
 
 const BASE_URL =
-  process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_URL
+    ? process.env.NEXT_PUBLIC_URL
     : "http://localhost:3000";
 
 export default async function Billing() {

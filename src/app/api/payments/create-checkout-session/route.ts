@@ -6,8 +6,8 @@ import Stripe from "stripe";
 const stripe = new Stripe(env.STRIPE_SECRET_KEY);
 
 const BASE_URL =
-  process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_URL
+    ? process.env.NEXT_PUBLIC_URL
     : "http://localhost:3000";
 
 export async function POST(req: Request) {
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     if (subscriptions.data.length > 0) {
       return NextResponse.json(
         { error: "User already has an active subscription", redirect: true },
-        { status: 400 }
+        { status: 400 },
       );
     }
   }
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
       { error: "Failed to create checkout session" },
       {
         status: 500,
-      }
+      },
     );
   }
 }
